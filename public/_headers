@@ -10,5 +10,11 @@
   Cache-Control: no-store
   X-Robots-Tag: noindex, nofollow, noarchive
 
-/assets/*
+/assets/images/*
+  Cache-Control: public, max-age=60, must-revalidate
+
+/assets/css/*
+  Cache-Control: public, max-age=604800, must-revalidate
+
+/assets/js/*
   Cache-Control: public, max-age=604800, must-revalidate

@@ -1,17 +1,13 @@
 {
   "name": "bellemyunail",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "r2:create": "wrangler r2 bucket create bellemyunail-media"
+    "deploy": "wrangler deploy"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
-  },
-  "dependencies": {
-    "jose": "^6.0.0"
   }
 }

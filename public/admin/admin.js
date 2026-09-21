@@ -4,21 +4,19 @@ const TARGET_WIDTH = 1920;
 const ACCEPTED_EXT = /\.(jpe?g|png|webp)$/i;
 const ACCEPTED_MIME = new Set(["image/jpeg", "image/png", "image/webp"]);
 
-let manifest = {};
 let slots = {};
 
 bootstrap().catch(showFatal);
 
 async function bootstrap() {
-  const [meRes, manifestRes] = await Promise.all([
+  const [meRes, slotsRes] = await Promise.all([
     fetch("/admin/api/me", { credentials: "same-origin", cache: "no-store" }),
-    fetch("/admin/api/manifest", { credentials: "same-origin", cache: "no-store" })
+    fetch("/admin/api/slots", { credentials: "same-origin", cache: "no-store" })
   ]);
-  if (!meRes.ok || !manifestRes.ok) throw new Error("관리자 인증 또는 초기 데이터를 불러오지 못했습니다.");
+  if (!meRes.ok || !slotsRes.ok) throw new Error("관리자 인증 또는 초기 데이터를 불러오지 못했습니다.");
   const me = await meRes.json();
-  const data = await manifestRes.json();
+  const data = await slotsRes.json();
   document.querySelector("[data-admin-email]").textContent = me.email || "관리자";
-  manifest = data.manifest || {};
   slots = data.slots || {};
   render();
 }
@@ -29,19 +27,17 @@ function render() {
   Object.entries(slots).forEach(([slot, info]) => {
     const card = document.createElement("article");
     card.className = "card";
-    const version = manifest?.[slot]?.version;
-    const currentSrc = version ? `/media/${encodeURIComponent(slot)}?v=${encodeURIComponent(version)}` : info.fallback;
-    const updated = manifest?.[slot]?.updatedAt ? new Date(manifest[slot].updatedAt).toLocaleString("ko-KR") : "기본 이미지 사용 중";
+    const currentSrc = info.publicUrl;
     card.innerHTML = `
-      <div class="preview"><img src="${escapeHtml(currentSrc)}" alt="${escapeHtml(info.label)} 현재 이미지" decoding="async"></div>
+      <div class="preview"><img src="${escapeHtml(currentSrc)}?v=${Date.now()}" alt="${escapeHtml(info.label)} 현재 이미지" decoding="async"></div>
       <div class="body">
         <h2>${escapeHtml(info.label)}</h2>
-        <div class="meta">${escapeHtml(updated)}</div>
+        <div class="meta">GitHub 정적 이미지 · 변경 시 자동 재배포</div>
         <label class="picker">JPG / PNG / WebP · 원본 10MB 이하 · 최대 4096px
           <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" data-file>
         </label>
-        <div class="actions"><button class="upload" type="button" disabled data-upload>변환 후 업로드</button></div>
-        <div class="status" data-status aria-live="polite">파일을 선택하면 변환 결과를 먼저 확인합니다.</div>
+        <div class="actions"><button class="upload" type="button" disabled data-upload>변환 후 저장</button></div>
+        <div class="status" data-status aria-live="polite">파일을 선택하면 1920px WebP 변환 결과를 먼저 확인합니다.</div>
       </div>`;
     grid.appendChild(card);
 
@@ -62,7 +58,7 @@ function render() {
       clearPreviewUrl();
       prepared = null;
       card.classList.remove("is-prepared");
-      preview.src = originalPreview;
+      preview.src = `${originalPreview}?v=${Date.now()}`;
       button.disabled = true;
       status.className = "status";
       const file = input.files?.[0];
@@ -75,11 +71,11 @@ function render() {
         card.classList.add("is-prepared");
         const kb = Math.max(1, Math.round(prepared.blob.size / 1024));
         const beforeKb = Math.max(1, Math.round(file.size / 1024));
-        status.textContent = `${prepared.originalWidth}×${prepared.originalHeight}px · ${beforeKb}KB → ${prepared.width}×${prepared.height}px · ${kb}KB ${prepared.type === "image/webp" ? "WebP" : "JPEG"}`;
+        status.textContent = `${prepared.originalWidth}×${prepared.originalHeight}px · ${beforeKb}KB → ${prepared.width}×${prepared.height}px · ${kb}KB WebP`;
         status.classList.add("ok");
         button.disabled = false;
       } catch (err) {
-        preview.src = originalPreview;
+        preview.src = `${originalPreview}?v=${Date.now()}`;
         status.textContent = err.message || "이미지를 처리할 수 없습니다.";
         status.classList.add("bad");
       }
@@ -89,25 +85,23 @@ function render() {
       if (!prepared) return;
       button.disabled = true;
       status.className = "status";
-      status.textContent = "R2에 업로드 중입니다…";
+      status.textContent = "GitHub에 저장 중입니다…";
       try {
         const form = new FormData();
         form.set("slot", slot);
-        form.set("file", new File([prepared.blob], prepared.type === "image/webp" ? `${slot}.webp` : `${slot}.jpg`, { type: prepared.type }));
+        form.set("file", new File([prepared.blob], `${slot}.webp`, { type: "image/webp" }));
         const res = await fetch("/admin/api/upload", { method: "POST", body: form, credentials: "same-origin" });
         const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.error || "업로드에 실패했습니다.");
-        manifest[slot] = { ...(manifest[slot] || {}), version: data.version, updatedAt: data.updatedAt };
+        if (!res.ok) throw new Error(data.error || "저장에 실패했습니다.");
         clearPreviewUrl();
-        preview.src = `${data.mediaUrl}&t=${Date.now()}`;
+        preview.src = previewUrl || `${originalPreview}?pending=${Date.now()}`;
         card.classList.remove("is-prepared");
-        card.querySelector(".meta").textContent = new Date(data.updatedAt).toLocaleString("ko-KR");
-        status.textContent = "업로드 완료. 공개 페이지를 새로고침하면 새 사진이 적용됩니다.";
+        status.textContent = "GitHub 저장 완료. Cloudflare 자동 배포가 끝나면 공개 사이트에 반영됩니다. 보통 잠시만 기다리면 됩니다.";
         status.classList.add("ok");
         input.value = "";
         prepared = null;
       } catch (err) {
-        status.textContent = err.message || "업로드에 실패했습니다.";
+        status.textContent = err.message || "저장에 실패했습니다.";
         status.classList.add("bad");
         button.disabled = false;
       }
@@ -138,15 +132,10 @@ async function prepareImage(file) {
   ctx.drawImage(source.image, 0, 0, width, height);
   source.close?.();
 
-  let type = "image/webp";
-  let blob = await canvasToBlob(canvas, type, .82);
-  if (!blob || blob.type !== "image/webp") {
-    type = "image/jpeg";
-    blob = await canvasToBlob(canvas, type, .86);
-  }
-  if (!blob) throw new Error("브라우저에서 이미지를 변환하지 못했습니다.");
+  const blob = await canvasToBlob(canvas, "image/webp", .82);
+  if (!blob || blob.type !== "image/webp") throw new Error("이 브라우저에서는 WebP 변환을 지원하지 않습니다. 최신 Chrome/Safari에서 다시 시도해 주세요.");
   if (blob.size > MAX_BYTES) throw new Error("변환 후 이미지가 10MB를 초과합니다. 다른 이미지를 선택해 주세요.");
-  return { blob, type, width, height, originalWidth: ow, originalHeight: oh };
+  return { blob, width, height, originalWidth: ow, originalHeight: oh };
 }
 
 async function decodeImage(file) {

@@ -1,38 +1,37 @@
-BELLEMYU NAIL 빠른 배포 순서
-============================
+BELLEMYUNAIL 최종 구조 — 이것으로 고정
 
-1) 이 폴더 전체를 GitHub 저장소 루트에 올립니다.
+구성
+- Cloudflare Worker 1개
+- GitHub 저장소 1개: tambleofficial/bellemyunail1
+- Cloudflare Access: /admin* 만 보호
+- 관리자 사진 저장: GitHub 이미지 파일 교체 -> 자동 Worker 재배포
 
-2) 로컬/Cloudflare에서 최초 배포
-   npm install
-   npx wrangler login
-   npm run r2:create
-   npm run deploy
+사용하지 않음
+- R2 없음
+- Pages 없음
+- KV/D1 없음
+- 별도 Worker 없음
+- 결제수단 등록 없음
 
-3) 배포된 주소 확인
-   https://bellemyunail.<내-workers-dev-subdomain>.workers.dev
+지금 해야 할 것
+1) 이 ZIP 내용 전체로 GitHub 저장소 tambleofficial/bellemyunail1 을 덮어쓰고 main에 push
+2) Cloudflare Builds에서 다시 배포
+   Project: bellemyunail
+   Build command: 비움
+   Deploy command: npx wrangler deploy
+3) 배포 성공 후 Zero Trust > Access > Applications에서
+   <bellemyunail workers.dev 주소>/admin* 만 Self-hosted application으로 보호
+   정책: 본인 이메일만 Allow
+4) GitHub Fine-grained PAT 생성
+   - Only select repositories: tambleofficial/bellemyunail1
+   - Contents: Read and write
+   - 다른 권한은 주지 않음
+5) Cloudflare Worker Secret에 GITHUB_TOKEN 하나만 등록
+6) /admin/ 접속 후 사진 변경
 
-4) Cloudflare Zero Trust > Access > Applications
-   Self-hosted application 생성
-   보호 경로: bellemyunail.<내-subdomain>.workers.dev/admin*
-   Allow 정책: 관리자 본인 이메일만 허용
+중요
+Cloudflare Access의 인증 결과는 Worker에서 ctx.access로 다시 확인합니다.
+TEAM_DOMAIN / POLICY_AUD 같은 별도 인증 Secret은 필요 없습니다.
 
-5) Access 앱에서 값 확인 후 Worker Secret 등록
-   npx wrangler secret put TEAM_DOMAIN
-   값 예: https://myteam.cloudflareaccess.com
-
-   npx wrangler secret put POLICY_AUD
-   값: Access Application Audience (AUD) Tag
-
-   선택: 코드에서도 관리자 이메일을 고정하려면
-   npx wrangler secret put ADMIN_EMAILS
-   값 예: owner@example.com
-
-6) 관리자 접속
-   https://bellemyunail.<내-subdomain>.workers.dev/admin/
-
-7) 이후 운영
-   - 코드 변경: GitHub push -> Worker 자동 배포(Cloudflare Git 연결 시)
-   - 사진 변경: /admin/에서 업로드 -> R2 반영
-
-상세 내용: SETUP-KO.md
+사진 변경 흐름
+/admin -> Access 로그인 -> 이미지 선택 -> 1920px WebP(82%) + EXIF 제거 -> Worker 재검증 -> GitHub 파일 교체 -> GitHub 커밋 -> Cloudflare 자동 재배포 -> 반영

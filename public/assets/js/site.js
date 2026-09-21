@@ -54,15 +54,4 @@
 
   document.querySelectorAll(".reveal").forEach((el) => observer ? observer.observe(el) : el.classList.add("is-visible"));
 
-  fetch("/api/media-manifest", { credentials: "same-origin" })
-    .then((res) => res.ok ? res.json() : {})
-    .then((manifest) => {
-      document.querySelectorAll("img[data-media-slot]").forEach((img) => {
-        const slot = img.dataset.mediaSlot;
-        const version = manifest?.[slot]?.version;
-        if (!version) return;
-        img.src = `/media/${encodeURIComponent(slot)}?v=${encodeURIComponent(version)}`;
-      });
-    })
-    .catch(() => {});
 })();
