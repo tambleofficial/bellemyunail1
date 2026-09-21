@@ -33,7 +33,7 @@ Workers Builds 설정:
 
 공개 홈페이지 `/`는 Access 대상에 넣지 않습니다.
 
-Cloudflare Access가 통과된 요청은 Worker에서 `ctx.access`로 다시 확인합니다. 따라서 `TEAM_DOMAIN`, `POLICY_AUD` 같은 인증 Secret은 필요하지 않습니다.
+이 프로젝트는 Workers Static Assets를 사용하므로 `ctx.access` 대신 Access가 넣어주는 `Cf-Access-Jwt-Assertion` JWT를 Worker가 직접 검증합니다. 따라서 `TEAM_DOMAIN`과 `POLICY_AUD`가 필요합니다.
 
 ## 4. GitHub Fine-grained token 생성
 GitHub의 Fine-grained personal access token을 생성합니다.
@@ -46,10 +46,13 @@ GitHub의 Fine-grained personal access token을 생성합니다.
 
 이 토큰은 관리자 사진을 교체할 때 지정된 이미지 파일을 GitHub Contents API로 업데이트하는 데만 사용합니다.
 
-## 5. Cloudflare Secret 하나 등록
-Worker 설정에서 Secret으로 다음 하나만 추가합니다.
+## 5. Cloudflare 변수/Secret 등록
+Worker 설정에서 다음을 추가합니다.
 
-`GITHUB_TOKEN=<방금 만든 fine-grained token>`
+- `TEAM_DOMAIN=https://<팀이름>.cloudflareaccess.com`
+- `POLICY_AUD=<Access Application Audience Tag>`
+- `ADMIN_EMAILS=<관리자 이메일>` (권장)
+- `GITHUB_TOKEN=<방금 만든 fine-grained token>` (Secret)
 
 토큰은 코드나 GitHub 저장소에 넣지 않습니다.
 
@@ -65,7 +68,7 @@ Worker 설정에서 Secret으로 다음 하나만 추가합니다.
 - Canvas 재인코딩으로 EXIF/GPS 제거
 
 Worker에서 다시:
-- `ctx.access` 인증 확인
+- `Cf-Access-Jwt-Assertion` JWT 서명/issuer/AUD 인증 확인
 - same-origin 확인
 - 지정된 9개 슬롯만 허용
 - 실제 WebP signature 확인

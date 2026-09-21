@@ -1,3 +1,5 @@
+import { jwtVerify, createRemoteJWKSet } from "jose";
+
 const SLOTS = Object.freeze({
   space: { label: "매장 공간", path: "public/assets/images/space.webp", publicUrl: "/assets/images/space.webp" },
   "nail-01": { label: "네일 포트폴리오 01", path: "public/assets/images/nail-01.webp", publicUrl: "/assets/images/nail-01.webp" },
@@ -23,7 +25,7 @@ export default {
       if (path === "/sitemap.xml") return sitemapResponse(url.origin);
 
       if (path === "/admin" || path.startsWith("/admin/")) {
-        const access = await requireAccess(ctx);
+        const access = await requireAccess(request, env);
         if (access instanceof Response) return access;
 
         if (path === "/admin/api/me") {
@@ -56,26 +58,67 @@ export default {
   }
 };
 
-async function requireAccess(ctx) {
-  if (!ctx.access) {
-    return json({ ok: false, error: "관리자 페이지는 Cloudflare Access 설정 후 사용할 수 있습니다." }, 403, {
+const accessJwksCache = new Map();
+
+async function requireAccess(request, env) {
+  const teamDomain = normalizeTeamDomain(env.TEAM_DOMAIN);
+  const audience = String(env.POLICY_AUD || "").trim();
+  const token = String(request.headers.get("Cf-Access-Jwt-Assertion") || "").trim();
+
+  if (!teamDomain || !audience) {
+    return json({ ok: false, error: "관리자 인증 환경변수(TEAM_DOMAIN / POLICY_AUD)가 아직 설정되지 않았습니다." }, 503, {
+      "Cache-Control": "no-store",
+      "X-Robots-Tag": "noindex"
+    });
+  }
+
+  if (!token) {
+    return json({ ok: false, error: "Cloudflare Access 인증 토큰이 없습니다." }, 403, {
       "Cache-Control": "no-store",
       "X-Robots-Tag": "noindex"
     });
   }
 
   try {
-    const identity = await ctx.access.getIdentity();
-    const email = String(identity?.email || "").trim().toLowerCase();
+    let jwks = accessJwksCache.get(teamDomain);
+    if (!jwks) {
+      jwks = createRemoteJWKSet(new URL(`${teamDomain}/cdn-cgi/access/certs`));
+      accessJwksCache.set(teamDomain, jwks);
+    }
+
+    const { payload } = await jwtVerify(token, jwks, {
+      issuer: teamDomain,
+      audience
+    });
+
+    const email = String(payload?.email || "").trim().toLowerCase();
     if (!email) throw new Error("missing Access identity email");
+
+    const allowlist = String(env.ADMIN_EMAILS || "")
+      .split(",")
+      .map(v => v.trim().toLowerCase())
+      .filter(Boolean);
+    if (allowlist.length && !allowlist.includes(email)) {
+      return json({ ok: false, error: "허용되지 않은 관리자 계정입니다." }, 403, {
+        "Cache-Control": "no-store",
+        "X-Robots-Tag": "noindex"
+      });
+    }
+
     return { email };
   } catch (error) {
-    console.warn("Access identity validation failed", error instanceof Error ? error.message : error);
+    console.warn("Access JWT validation failed", error instanceof Error ? error.message : error);
     return json({ ok: false, error: "Cloudflare Access 인증 정보를 확인하지 못했습니다." }, 403, {
       "Cache-Control": "no-store",
       "X-Robots-Tag": "noindex"
     });
   }
+}
+
+function normalizeTeamDomain(value) {
+  const raw = String(value || "").trim().replace(/\/$/, "");
+  if (!raw) return "";
+  return /^https:\/\//i.test(raw) ? raw : `https://${raw}`;
 }
 
 async function uploadMediaToGitHub(request, env, email) {
