@@ -4,7 +4,7 @@
   "lang": "ko-KR",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f6f2ec",
-  "theme_color": "#f6f2ec",
+  "background_color": "#f4f0ea",
+  "theme_color": "#f4f0ea",
   "icons": [{ "src": "/assets/images/favicon.png", "sizes": "64x64", "type": "image/png" }]
 }
