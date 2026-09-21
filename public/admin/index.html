@@ -4,46 +4,117 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>벨르뮤네일 관리자</title>
+  <title>벨르뮤네일 비주얼 관리자</title>
   <link rel="icon" href="/assets/images/favicon.png">
   <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
-  <div class="wrap">
-    <header class="top">
-      <a href="/" aria-label="벨르뮤네일 홈" class="brand-link"><img src="/assets/images/logo.png" width="437" height="266" decoding="async" alt="벨르뮤네일"></a>
-      <div class="top-actions" data-authenticated hidden>
-        <div class="who"><img data-avatar alt="" hidden><span>관리자 <strong data-admin-user>확인 중…</strong></span></div>
-        <button class="ghost-btn" type="button" data-logout>로그아웃</button>
-      </div>
-    </header>
+  <header class="admin-topbar">
+    <a class="admin-brand" href="/" target="_blank" rel="noopener" aria-label="벨르뮤네일 공개 사이트 열기">
+      <img src="/assets/images/logo.png" width="437" height="266" alt="벨르뮤네일">
+      <span><b>사이트 편집기</b><small>사진과 문구를 실제 화면에서 수정</small></span>
+    </a>
+    <div class="topbar-actions" data-authenticated hidden>
+      <span class="deploy-state" data-save-state>저장된 상태</span>
+      <div class="who"><img data-avatar alt="" hidden><span><strong data-admin-user>관리자</strong></span></div>
+      <button class="btn ghost small" type="button" data-logout>로그아웃</button>
+    </div>
+  </header>
 
-    <main>
-      <section class="login-card" data-login-panel hidden>
-        <p class="eyebrow">BELLEMYU NAIL ADMIN</p>
-        <h1>관리자 로그인</h1>
-        <p>등록된 GitHub 관리자 계정으로 로그인하면 사진을 교체할 수 있습니다.</p>
-        <a class="github-login" href="/admin/auth/start">GitHub로 로그인</a>
-        <p class="small">GitHub App은 <strong>bellemyunail1</strong> 저장소에만 설치하고, Contents 권한만 허용하는 구성을 전제로 합니다.</p>
-        <p class="error-box" data-login-error hidden></p>
-      </section>
+  <main class="admin-root">
+    <section class="login-card" data-login-panel hidden>
+      <p class="eyebrow">BELLEMYU NAIL ADMIN</p>
+      <h1>GitHub 관리자 로그인</h1>
+      <p>등록된 GitHub 관리자 계정으로 로그인하면 실제 홈페이지를 보면서 사진과 문구를 수정할 수 있습니다.</p>
+      <a class="github-login" href="/admin/auth/start">GitHub로 로그인</a>
+      <p class="small">수정 내용은 <strong>bellemyunail1</strong> 저장소에 한 번의 커밋으로 저장되고 Cloudflare가 자동 재배포합니다.</p>
+      <p class="error-box" data-login-error hidden></p>
+    </section>
 
-      <section data-admin-panel hidden>
-        <div class="intro">
-          <div>
-            <p class="eyebrow">BELLEMYU NAIL ADMIN</p>
-            <h1>사진 관리</h1>
-          </div>
-          <p>사진을 선택하면 브라우저에서 먼저 검사하고 최대 폭 1920px로 줄인 뒤 WebP로 재인코딩합니다. 결과를 확인한 뒤 저장하세요.</p>
+    <section class="editor-app" data-admin-panel hidden>
+      <div class="editor-head">
+        <div>
+          <p class="eyebrow">VISUAL SITE EDITOR</p>
+          <h1>보이는 화면에서 바로 수정</h1>
+          <p>수정할 문구나 사진을 미리보기에서 클릭하세요. 같은 사진이 여러 페이지나 마퀴에 반복되어도 <strong>한 슬롯만 수정하면 전부 같이 바뀝니다.</strong></p>
         </div>
+        <div class="repo-chip">저장소 <strong data-repository>확인 중…</strong></div>
+      </div>
 
-        <div class="notice">허용: JPG/JPEG/PNG/WebP · 원본 최대 10MB · 가로/세로 최대 4096px · 서버에서도 WebP 시그니처/해상도를 다시 검사합니다.</div>
-        <div class="repo-line">연결 저장소: <strong data-repository>확인 중…</strong></div>
-        <section class="grid" data-grid><div class="notice">관리자 정보를 불러오는 중입니다…</div></section>
-        <p class="footnote">보안: GitHub OAuth state + PKCE, 지정 관리자 GitHub User ID 확인, Secure/HttpOnly 세션, CSRF 및 Origin 검증, GitHub App 설치 토큰(1시간 만료)을 사용합니다. 브라우저에는 GitHub App Private Key가 노출되지 않습니다.</p>
-      </section>
-    </main>
-  </div>
+      <nav class="page-tabs" data-page-tabs aria-label="편집 페이지"></nav>
+
+      <div class="editor-toolbar">
+        <div class="device-switch" role="group" aria-label="미리보기 크기">
+          <button type="button" class="is-active" data-device="desktop">데스크톱</button>
+          <button type="button" data-device="mobile">모바일 390px</button>
+        </div>
+        <div class="toolbar-actions">
+          <label class="toggle"><input type="checkbox" data-highlight checked><span>편집 가능 영역 표시</span></label>
+          <button type="button" class="btn ghost small" data-refresh-preview>미리보기 새로고침</button>
+          <a class="btn ghost small" data-open-public href="/" target="_blank" rel="noopener">새 탭에서 보기</a>
+        </div>
+      </div>
+
+      <div class="editor-grid">
+        <section class="preview-panel">
+          <div class="preview-shell" data-preview-shell>
+            <div class="preview-loading" data-preview-loading>페이지 미리보기를 불러오는 중…</div>
+            <iframe title="벨르뮤네일 페이지 미리보기" data-preview-frame></iframe>
+          </div>
+        </section>
+
+        <aside class="inspector" data-inspector>
+          <div class="inspector-empty" data-inspector-empty>
+            <div class="cursor-icon">↖</div>
+            <h2>수정할 곳을 클릭하세요</h2>
+            <p>미리보기에서 테두리가 표시된 문구 또는 사진을 클릭하면 여기에서 바로 수정할 수 있습니다.</p>
+            <div class="page-field-list">
+              <div class="field-list-head"><strong>현재 페이지 편집 항목</strong><span data-field-count></span></div>
+              <div data-page-field-list></div>
+            </div>
+          </div>
+
+          <div class="inspector-editor" data-inspector-editor hidden>
+            <button class="back-to-list" type="button" data-close-inspector>← 편집 항목 목록</button>
+            <p class="inspector-kicker" data-inspector-kicker></p>
+            <h2 data-inspector-title></h2>
+            <div class="usage-box" data-usage-box></div>
+
+            <div data-text-editor hidden>
+              <label class="field-label" for="edit-text">문구</label>
+              <textarea id="edit-text" data-text-input rows="7"></textarea>
+              <div class="field-meta"><span data-text-count></span><button class="link-btn" type="button" data-reset-current>이 문구 되돌리기</button></div>
+              <p class="helper">입력 즉시 미리보기에 반영됩니다. 실제 공개 사이트는 아래 ‘전체 저장 및 배포’를 눌러야 변경됩니다.</p>
+            </div>
+
+            <div data-image-editor hidden>
+              <div class="image-current"><img data-image-preview alt="선택한 이미지 미리보기"></div>
+              <label class="image-picker">
+                <strong>새 사진 선택</strong>
+                <span>JPG/JPEG/PNG/WebP · 원본 10MB 이하 · 최대 4096px</span>
+                <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" data-image-input>
+              </label>
+              <div class="image-status" data-image-status>사진을 선택하면 최대 폭 1920px WebP로 변환하고 EXIF/GPS 정보를 제거합니다.</div>
+              <button class="link-btn" type="button" data-reset-image hidden>이 사진 변경 취소</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="save-dock" data-save-dock>
+        <div>
+          <strong data-change-summary>변경사항 없음</strong>
+          <span data-save-message>문구와 사진을 여러 개 수정한 뒤 한 번에 저장할 수 있습니다.</span>
+        </div>
+        <div class="save-actions">
+          <button class="btn ghost" type="button" data-reset-all disabled>전체 취소</button>
+          <button class="btn primary" type="button" data-save-all disabled>전체 저장 및 배포</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" data-toast hidden></div>
   <script src="/admin/admin.js" defer></script>
 </body>
 </html>

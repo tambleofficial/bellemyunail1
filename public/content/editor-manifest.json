@@ -1,0 +1,3469 @@
+{
+  "pages": [
+    {
+      "id": "home",
+      "label": "홈",
+      "path": "/"
+    },
+    {
+      "id": "design",
+      "label": "네일 디자인",
+      "path": "/nail-design/"
+    },
+    {
+      "id": "process",
+      "label": "시술 과정",
+      "path": "/process/"
+    },
+    {
+      "id": "portfolio",
+      "label": "포트폴리오",
+      "path": "/portfolio/"
+    },
+    {
+      "id": "visit",
+      "label": "방문 안내",
+      "path": "/visit/"
+    },
+    {
+      "id": "faq",
+      "label": "FAQ",
+      "path": "/faq/"
+    }
+  ],
+  "text": {
+    "global.footer.tagline": {
+      "label": "공통 푸터 소개 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "공통 푸터",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "공통 푸터",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "공통 푸터",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "공통 푸터",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "공통 푸터",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "공통 푸터",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "공통 푸터",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.heading01.part1": {
+      "label": "메인 제목 1행",
+      "pageId": "home",
+      "page": "홈",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.heading01.part2": {
+      "label": "메인 제목 2행",
+      "pageId": "home",
+      "page": "홈",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.heading01.part3": {
+      "label": "메인 제목 3행",
+      "pageId": "home",
+      "page": "홈",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.heading02.part1": {
+      "label": "섹션 제목 1행",
+      "pageId": "home",
+      "page": "홈",
+      "section": "디자인 소개",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "디자인 소개",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.heading02.part2": {
+      "label": "섹션 제목 2행",
+      "pageId": "home",
+      "page": "홈",
+      "section": "디자인 소개",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "디자인 소개",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.heading03.part1": {
+      "label": "섹션 제목 1행",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.heading03.part2": {
+      "label": "섹션 제목 2행",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.heading04.part1": {
+      "label": "섹션 제목 1행",
+      "pageId": "home",
+      "page": "홈",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.heading04.part2": {
+      "label": "섹션 제목 2행",
+      "pageId": "home",
+      "page": "홈",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-02.category": {
+      "label": "마퀴 네일 이미지 02 분류",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 4
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-02.title": {
+      "label": "마퀴 네일 이미지 02 제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 4
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-03.category": {
+      "label": "마퀴 네일 이미지 03 분류",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 4
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-03.title": {
+      "label": "마퀴 네일 이미지 03 제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 4
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-05.category": {
+      "label": "마퀴 네일 이미지 05 분류",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 4
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-05.title": {
+      "label": "마퀴 네일 이미지 05 제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 4
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-06.category": {
+      "label": "마퀴 네일 이미지 06 분류",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 4
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-06.title": {
+      "label": "마퀴 네일 이미지 06 제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 4
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-08.category": {
+      "label": "마퀴 네일 이미지 08 분류",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 2
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-08.title": {
+      "label": "마퀴 네일 이미지 08 제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 2
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-01.category": {
+      "label": "마퀴 네일 이미지 01 분류",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 2
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-01.title": {
+      "label": "마퀴 네일 이미지 01 제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 2
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-07.category": {
+      "label": "마퀴 네일 이미지 07 분류",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 2
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-07.title": {
+      "label": "마퀴 네일 이미지 07 제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 2
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-04.category": {
+      "label": "마퀴 네일 이미지 04 분류",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 2
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.marquee.nail-04.title": {
+      "label": "마퀴 네일 이미지 04 제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록 · 무한 마퀴",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴",
+          "note": "",
+          "count": 2
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.001": {
+      "label": "첫 화면 · 상단 라벨",
+      "pageId": "home",
+      "page": "홈",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.002": {
+      "label": "첫 화면 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.003": {
+      "label": "첫 화면 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.004": {
+      "label": "디자인 소개 · 섹션 라벨",
+      "pageId": "home",
+      "page": "홈",
+      "section": "디자인 소개",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "디자인 소개",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.005": {
+      "label": "디자인 소개 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "디자인 소개",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "디자인 소개",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.006": {
+      "label": "무드 가이드 · 섹션 라벨",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.007": {
+      "label": "무드 가이드 · 섹션 제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.008": {
+      "label": "무드 가이드 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.009": {
+      "label": "무드 가이드 · 소제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.010": {
+      "label": "무드 가이드 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.011": {
+      "label": "무드 가이드 · 소제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.012": {
+      "label": "무드 가이드 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.013": {
+      "label": "무드 가이드 · 소제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.014": {
+      "label": "무드 가이드 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.015": {
+      "label": "무드 가이드 · 소제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.016": {
+      "label": "무드 가이드 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "무드 가이드",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.017": {
+      "label": "최근 손끝의 기록 · 섹션 라벨",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.018": {
+      "label": "최근 손끝의 기록 · 섹션 제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.019": {
+      "label": "최근 손끝의 기록 · 마퀴 안내 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "최근 손끝의 기록",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.020": {
+      "label": "시술 과정 안내 · 섹션 라벨",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.021": {
+      "label": "시술 과정 안내 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.022": {
+      "label": "시술 과정 안내 · 소제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.023": {
+      "label": "시술 과정 안내 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.024": {
+      "label": "시술 과정 안내 · 소제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.025": {
+      "label": "시술 과정 안내 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.026": {
+      "label": "시술 과정 안내 · 소제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.027": {
+      "label": "시술 과정 안내 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.028": {
+      "label": "시술 과정 안내 · 소제목",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.029": {
+      "label": "시술 과정 안내 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "시술 과정 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "시술 과정 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.030": {
+      "label": "방문 안내 · 섹션 라벨",
+      "pageId": "home",
+      "page": "홈",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "home.text.031": {
+      "label": "방문 안내 · 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.heading01.part1": {
+      "label": "메인 제목 1행",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.heading01.part2": {
+      "label": "메인 제목 2행",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.heading01.part3": {
+      "label": "메인 제목 3행",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.card.nail-01.category": {
+      "label": "네일 이미지 01 분류",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.card.nail-02.category": {
+      "label": "네일 이미지 02 분류",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.card.nail-03.category": {
+      "label": "네일 이미지 03 분류",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.card.nail-04.category": {
+      "label": "네일 이미지 04 분류",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.card.nail-05.category": {
+      "label": "네일 이미지 05 분류",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.card.nail-06.category": {
+      "label": "네일 이미지 06 분류",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.001": {
+      "label": "첫 화면 · 상단 라벨",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.002": {
+      "label": "첫 화면 · 문구",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.003": {
+      "label": "디자인 목록 · 섹션 제목",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.004": {
+      "label": "디자인 목록 · 문구",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.005": {
+      "label": "디자인 목록 · 섹션 제목",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.006": {
+      "label": "디자인 목록 · 문구",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.007": {
+      "label": "디자인 목록 · 섹션 제목",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.008": {
+      "label": "디자인 목록 · 문구",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.009": {
+      "label": "디자인 목록 · 섹션 제목",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.010": {
+      "label": "디자인 목록 · 문구",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.011": {
+      "label": "디자인 목록 · 섹션 제목",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.012": {
+      "label": "디자인 목록 · 문구",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.013": {
+      "label": "디자인 목록 · 섹션 제목",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.014": {
+      "label": "디자인 목록 · 문구",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "디자인 목록",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "디자인 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.015": {
+      "label": "상담 팁 · 문구",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "상담 팁",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "상담 팁",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.text.016": {
+      "label": "상담 팁 · 섹션 제목",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "상담 팁",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "상담 팁",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "design.extra.001": {
+      "label": "상담 팁 설명",
+      "pageId": "design",
+      "page": "네일 디자인",
+      "section": "상담 팁",
+      "usages": [
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "상담 팁",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.heading01.part1": {
+      "label": "메인 제목 1행",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.heading01.part2": {
+      "label": "메인 제목 2행",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.heading02.part1": {
+      "label": "섹션 제목 1행",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.heading02.part2": {
+      "label": "섹션 제목 2행",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.001": {
+      "label": "첫 화면 · 상단 라벨",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.002": {
+      "label": "첫 화면 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.003": {
+      "label": "4단계 시술 과정 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.004": {
+      "label": "4단계 시술 과정 · 섹션 제목",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.005": {
+      "label": "4단계 시술 과정 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.006": {
+      "label": "4단계 시술 과정 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.007": {
+      "label": "4단계 시술 과정 · 섹션 제목",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.008": {
+      "label": "4단계 시술 과정 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.009": {
+      "label": "4단계 시술 과정 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.010": {
+      "label": "4단계 시술 과정 · 섹션 제목",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.011": {
+      "label": "4단계 시술 과정 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.012": {
+      "label": "4단계 시술 과정 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.013": {
+      "label": "4단계 시술 과정 · 섹션 제목",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.014": {
+      "label": "4단계 시술 과정 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.015": {
+      "label": "체크리스트 · 섹션 라벨",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.016": {
+      "label": "체크리스트 · 소제목",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.017": {
+      "label": "체크리스트 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.018": {
+      "label": "체크리스트 · 소제목",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.019": {
+      "label": "체크리스트 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.020": {
+      "label": "체크리스트 · 소제목",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "process.text.021": {
+      "label": "체크리스트 · 문구",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.heading01.part1": {
+      "label": "메인 제목 1행",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.heading01.part2": {
+      "label": "메인 제목 2행",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-01.category": {
+      "label": "네일 이미지 01 분류",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-01.title": {
+      "label": "네일 이미지 01 제목",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-02.category": {
+      "label": "네일 이미지 02 분류",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-02.title": {
+      "label": "네일 이미지 02 제목",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-03.category": {
+      "label": "네일 이미지 03 분류",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-03.title": {
+      "label": "네일 이미지 03 제목",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-04.category": {
+      "label": "네일 이미지 04 분류",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-04.title": {
+      "label": "네일 이미지 04 제목",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-05.category": {
+      "label": "네일 이미지 05 분류",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-05.title": {
+      "label": "네일 이미지 05 제목",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-06.category": {
+      "label": "네일 이미지 06 분류",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-06.title": {
+      "label": "네일 이미지 06 제목",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-07.category": {
+      "label": "네일 이미지 07 분류",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-07.title": {
+      "label": "네일 이미지 07 제목",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-08.category": {
+      "label": "네일 이미지 08 분류",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.card.nail-08.title": {
+      "label": "네일 이미지 08 제목",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "포트폴리오 목록",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 목록",
+          "note": "",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.text.001": {
+      "label": "첫 화면 · 상단 라벨",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.text.002": {
+      "label": "첫 화면 · 문구",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.text.003": {
+      "label": "상담 팁 · 문구",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "상담 팁",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "상담 팁",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.text.004": {
+      "label": "상담 팁 · 섹션 제목",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "상담 팁",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "상담 팁",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "portfolio.extra.001": {
+      "label": "상담 팁 설명",
+      "pageId": "portfolio",
+      "page": "포트폴리오",
+      "section": "상담 팁",
+      "usages": [
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "상담 팁",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.heading01.part1": {
+      "label": "메인 제목 1행",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.heading01.part2": {
+      "label": "메인 제목 2행",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.heading01.part3": {
+      "label": "메인 제목 3행",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.text.001": {
+      "label": "첫 화면 · 상단 라벨",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.text.002": {
+      "label": "첫 화면 · 문구",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.text.003": {
+      "label": "방문 안내 · 섹션 제목",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.text.004": {
+      "label": "방문 안내 · 문구",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.text.005": {
+      "label": "방문 안내 · 섹션 제목",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.text.006": {
+      "label": "방문 안내 · 문구",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.text.007": {
+      "label": "방문 안내 · 섹션 제목",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.text.008": {
+      "label": "방문 안내 · 문구",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.text.009": {
+      "label": "체크리스트 · 섹션 라벨",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.text.010": {
+      "label": "체크리스트 · 섹션 제목",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.extra.001": {
+      "label": "체크리스트 문구",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.extra.002": {
+      "label": "체크리스트 문구",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.extra.003": {
+      "label": "체크리스트 문구",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.extra.004": {
+      "label": "체크리스트 문구",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "체크리스트",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "체크리스트",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "visit.extra.005": {
+      "label": "매장 사진 캡션",
+      "pageId": "visit",
+      "page": "방문 안내",
+      "section": "방문 안내",
+      "usages": [
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "방문 안내",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 700
+    },
+    "faq.heading01.part1": {
+      "label": "메인 제목 1행",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.heading01.part2": {
+      "label": "메인 제목 2행",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.heading02.part1": {
+      "label": "섹션 제목 1행",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.heading02.part2": {
+      "label": "섹션 제목 2행",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item01.question": {
+      "label": "FAQ 1 질문",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item01.answer": {
+      "label": "FAQ 1 답변",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item02.question": {
+      "label": "FAQ 2 질문",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item02.answer": {
+      "label": "FAQ 2 답변",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item03.question": {
+      "label": "FAQ 3 질문",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item03.answer": {
+      "label": "FAQ 3 답변",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item04.question": {
+      "label": "FAQ 4 질문",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item04.answer": {
+      "label": "FAQ 4 답변",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item05.question": {
+      "label": "FAQ 5 질문",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item05.answer": {
+      "label": "FAQ 5 답변",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item06.question": {
+      "label": "FAQ 6 질문",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.item06.answer": {
+      "label": "FAQ 6 답변",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.text.001": {
+      "label": "첫 화면 · 상단 라벨",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.text.002": {
+      "label": "첫 화면 · 문구",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "첫 화면",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "첫 화면",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.text.003": {
+      "label": "자주 묻는 질문 · 섹션 라벨",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "faq.text.004": {
+      "label": "자주 묻는 질문 · 문구",
+      "pageId": "faq",
+      "page": "FAQ",
+      "section": "자주 묻는 질문",
+      "usages": [
+        {
+          "pageId": "faq",
+          "page": "FAQ",
+          "section": "자주 묻는 질문",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 1200
+    },
+    "home.cta.01": {
+      "label": "버튼 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "버튼/링크",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "버튼/링크",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    },
+    "home.cta.02": {
+      "label": "버튼 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "버튼/링크",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "버튼/링크",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    },
+    "home.cta.03": {
+      "label": "버튼 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "버튼/링크",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "버튼/링크",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    },
+    "home.cta.04": {
+      "label": "버튼 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "버튼/링크",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "버튼/링크",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    },
+    "home.cta.05": {
+      "label": "버튼 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "버튼/링크",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "버튼/링크",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    },
+    "home.cta.06": {
+      "label": "버튼 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "버튼/링크",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "버튼/링크",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    },
+    "home.cta.07": {
+      "label": "버튼 문구",
+      "pageId": "home",
+      "page": "홈",
+      "section": "버튼/링크",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "버튼/링크",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    },
+    "process.tab.01": {
+      "label": "시술 단계 1 탭 이름",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    },
+    "process.tab.02": {
+      "label": "시술 단계 2 탭 이름",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    },
+    "process.tab.03": {
+      "label": "시술 단계 3 탭 이름",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    },
+    "process.tab.04": {
+      "label": "시술 단계 4 탭 이름",
+      "pageId": "process",
+      "page": "시술 과정",
+      "section": "4단계 시술 과정",
+      "usages": [
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "",
+          "count": 1
+        }
+      ],
+      "maxLength": 160
+    }
+  },
+  "images": {
+    "space": {
+      "label": "매장 공간",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "방문 안내 이미지",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "visit",
+          "page": "방문 안내",
+          "section": "매장 공간 대표 이미지",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        }
+      ],
+      "description": "이 이미지 슬롯을 한 번 바꾸면 아래 모든 위치가 함께 바뀝니다. 무한 마퀴의 복제 세트도 자동으로 동일 사진을 사용합니다."
+    },
+    "nail-01": {
+      "label": "네일 이미지 01",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "첫 화면 비주얼",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴 (자동 반복)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 2
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "네일 디자인 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        }
+      ],
+      "description": "이 이미지 슬롯을 한 번 바꾸면 아래 모든 위치가 함께 바뀝니다. 무한 마퀴의 복제 세트도 자동으로 동일 사진을 사용합니다."
+    },
+    "nail-02": {
+      "label": "네일 이미지 02",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴 (자동 반복)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 4
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "네일 디자인 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        }
+      ],
+      "description": "이 이미지 슬롯을 한 번 바꾸면 아래 모든 위치가 함께 바뀝니다. 무한 마퀴의 복제 세트도 자동으로 동일 사진을 사용합니다."
+    },
+    "nail-03": {
+      "label": "네일 이미지 03",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴 (자동 반복)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 4
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "네일 디자인 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        }
+      ],
+      "description": "이 이미지 슬롯을 한 번 바꾸면 아래 모든 위치가 함께 바뀝니다. 무한 마퀴의 복제 세트도 자동으로 동일 사진을 사용합니다."
+    },
+    "nail-04": {
+      "label": "네일 이미지 04",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "첫 화면 비주얼",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴 (자동 반복)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 2
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "네일 디자인 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        }
+      ],
+      "description": "이 이미지 슬롯을 한 번 바꾸면 아래 모든 위치가 함께 바뀝니다. 무한 마퀴의 복제 세트도 자동으로 동일 사진을 사용합니다."
+    },
+    "nail-05": {
+      "label": "네일 이미지 05",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴 (자동 반복)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 4
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "네일 디자인 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        }
+      ],
+      "description": "이 이미지 슬롯을 한 번 바꾸면 아래 모든 위치가 함께 바뀝니다. 무한 마퀴의 복제 세트도 자동으로 동일 사진을 사용합니다."
+    },
+    "nail-06": {
+      "label": "네일 이미지 06",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴 (자동 반복)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 4
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "design",
+          "page": "네일 디자인",
+          "section": "네일 디자인 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        }
+      ],
+      "description": "이 이미지 슬롯을 한 번 바꾸면 아래 모든 위치가 함께 바뀝니다. 무한 마퀴의 복제 세트도 자동으로 동일 사진을 사용합니다."
+    },
+    "nail-07": {
+      "label": "네일 이미지 07",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "무드 가이드 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴 (자동 반복)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 2
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        }
+      ],
+      "description": "이 이미지 슬롯을 한 번 바꾸면 아래 모든 위치가 함께 바뀝니다. 무한 마퀴의 복제 세트도 자동으로 동일 사진을 사용합니다."
+    },
+    "nail-08": {
+      "label": "네일 이미지 08",
+      "usages": [
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "최근 손끝의 기록 · 무한 마퀴 (자동 반복)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 2
+        },
+        {
+          "pageId": "home",
+          "page": "홈",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "process",
+          "page": "시술 과정",
+          "section": "4단계 시술 과정",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "포트폴리오 카드",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        },
+        {
+          "pageId": "portfolio",
+          "page": "포트폴리오",
+          "section": "사진 확대 보기 (자동 연동)",
+          "note": "같은 슬롯은 한 번 수정하면 모든 사용 위치에 반영",
+          "count": 1
+        }
+      ],
+      "description": "이 이미지 슬롯을 한 번 바꾸면 아래 모든 위치가 함께 바뀝니다. 무한 마퀴의 복제 세트도 자동으로 동일 사진을 사용합니다."
+    }
+  }
+}

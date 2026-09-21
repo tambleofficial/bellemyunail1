@@ -17,6 +17,18 @@ const OAUTH_TTL_SECONDS = 10 * 60;
 const SESSION_COOKIE = "__Secure-bellemyu_admin";
 const OAUTH_COOKIE = "__Secure-bellemyu_oauth";
 const GITHUB_API_VERSION = "2022-11-28";
+const CONTENT_PATH = "public/content/site-content.json";
+const EDITOR_MANIFEST_PATH = "/content/editor-manifest.json";
+const SITE_CONTENT_ASSET_PATH = "/content/site-content.json";
+const MAX_BATCH_BYTES = 30 * 1024 * 1024;
+const STATIC_PAGES = Object.freeze([
+  { id: "home", assetPath: "/", repoPath: "public/index.html" },
+  { id: "design", assetPath: "/nail-design/", repoPath: "public/nail-design/index.html" },
+  { id: "process", assetPath: "/process/", repoPath: "public/process/index.html" },
+  { id: "portfolio", assetPath: "/portfolio/", repoPath: "public/portfolio/index.html" },
+  { id: "visit", assetPath: "/visit/", repoPath: "public/visit/index.html" },
+  { id: "faq", assetPath: "/faq/", repoPath: "public/faq/index.html" }
+]);
 
 export default {
   async fetch(request, env) {
@@ -24,9 +36,6 @@ export default {
     const path = url.pathname;
 
     try {
-      if (path === "/robots.txt") return robotsResponse(url.origin);
-      if (path === "/sitemap.xml") return sitemapResponse(url.origin);
-
       if (path === "/admin/auth/start") {
         if (request.method !== "GET") return methodNotAllowed("GET");
         return startGitHubLogin(request, env);
@@ -49,20 +58,27 @@ export default {
         });
       }
 
-      if (path === "/admin/api/slots") {
+      if (path === "/admin/api/editor-state") {
         if (request.method !== "GET") return methodNotAllowed("GET");
         const session = await requireAdminSession(request, env);
         if (session instanceof Response) return session;
-        return adminJson({ ok: true, slots: SLOTS });
+        return getEditorState(request, env, session);
       }
 
-      if (path === "/admin/api/upload") {
+      if (path === "/admin/api/save") {
         if (request.method !== "POST") return methodNotAllowed("POST");
         const session = await requireAdminSession(request, env);
         if (session instanceof Response) return session;
         const csrfError = validateCsrfAndOrigin(request, session.csrf);
         if (csrfError) return csrfError;
-        return uploadMediaToGitHub(request, env, session);
+        return saveEditorChanges(request, env, session);
+      }
+
+      if (path === "/admin/api/slots") {
+        if (request.method !== "GET") return methodNotAllowed("GET");
+        const session = await requireAdminSession(request, env);
+        if (session instanceof Response) return session;
+        return adminJson({ ok: true, slots: SLOTS });
       }
 
       if (path === "/admin/api/logout") {
@@ -89,6 +105,266 @@ export default {
     }
   }
 };
+
+async function loadAssetJson(env, requestUrl, assetPath) {
+  const origin = new URL(requestUrl).origin;
+  const response = await env.ASSETS.fetch(new Request(`${origin}${assetPath}`, { method: "GET" }));
+  if (!response.ok) throw new Error(`필수 사이트 데이터(${assetPath})를 불러오지 못했습니다.`);
+  return response.json();
+}
+
+async function getEditorState(request, env, session) {
+  const [content, manifest] = await Promise.all([
+    loadAssetJson(env, request.url, SITE_CONTENT_ASSET_PATH),
+    loadAssetJson(env, request.url, EDITOR_MANIFEST_PATH)
+  ]);
+  return adminJson({
+    ok: true,
+    user: { id: session.uid, login: session.login, avatarUrl: session.avatarUrl || "" },
+    csrfToken: session.csrf,
+    repository: `${env.GITHUB_OWNER}/${env.GITHUB_REPO}`,
+    content,
+    manifest,
+    slots: SLOTS
+  });
+}
+
+async function saveEditorChanges(request, env, session) {
+  const configError = validateGitHubWriteConfig(env);
+  if (configError) return adminJson({ ok: false, error: configError }, 503);
+
+  const declaredSize = Number(request.headers.get("Content-Length") || 0);
+  if (declaredSize && declaredSize > MAX_BATCH_BYTES + 2 * 1024 * 1024) {
+    return adminJson({ ok: false, error: "한 번에 저장하는 변경사항이 너무 큽니다. 사진 수를 나눠 저장해 주세요." }, 413);
+  }
+
+  const form = await request.formData();
+  const payloadRaw = form.get("content");
+  if (typeof payloadRaw !== "string") return adminJson({ ok: false, error: "문구 데이터가 필요합니다." }, 400);
+
+  let submitted;
+  try { submitted = JSON.parse(payloadRaw); } catch { return adminJson({ ok: false, error: "문구 데이터 형식이 올바르지 않습니다." }, 400); }
+
+  const [currentContent, manifest] = await Promise.all([
+    loadAssetJson(env, request.url, SITE_CONTENT_ASSET_PATH),
+    loadAssetJson(env, request.url, EDITOR_MANIFEST_PATH)
+  ]);
+  const allowedText = currentContent && typeof currentContent.text === "object" ? currentContent.text : {};
+  const submittedText = submitted && typeof submitted.text === "object" ? submitted.text : null;
+  if (!submittedText) return adminJson({ ok: false, error: "저장할 문구를 확인할 수 없습니다." }, 400);
+
+  const nextText = {};
+  let textChanged = false;
+  for (const key of Object.keys(allowedText)) {
+    const value = Object.prototype.hasOwnProperty.call(submittedText, key) ? submittedText[key] : allowedText[key];
+    if (typeof value !== "string") return adminJson({ ok: false, error: `문구 값이 올바르지 않습니다: ${key}` }, 400);
+    const maxLength = Number(manifest?.text?.[key]?.maxLength || 1200);
+    if (value.length > maxLength) return adminJson({ ok: false, error: `문구가 너무 깁니다: ${manifest?.text?.[key]?.label || key}` }, 400);
+    nextText[key] = value;
+    if (value !== allowedText[key]) textChanged = true;
+  }
+  for (const key of Object.keys(submittedText)) {
+    if (!Object.prototype.hasOwnProperty.call(allowedText, key)) {
+      return adminJson({ ok: false, error: `허용되지 않은 문구 키입니다: ${key}` }, 400);
+    }
+  }
+
+  const imageChanges = [];
+  let totalImageBytes = 0;
+  for (const [name, value] of form.entries()) {
+    if (!name.startsWith("image:") || !(value instanceof File)) continue;
+    const slot = name.slice("image:".length);
+    const slotInfo = SLOTS[slot];
+    if (!slotInfo) return adminJson({ ok: false, error: `허용되지 않은 이미지 슬롯입니다: ${slot}` }, 400);
+    if (value.size <= 0 || value.size > MAX_UPLOAD_BYTES) return adminJson({ ok: false, error: `${slotInfo.label} 이미지는 10MB 이하여야 합니다.` }, 413);
+    totalImageBytes += value.size;
+    if (totalImageBytes > MAX_BATCH_BYTES) return adminJson({ ok: false, error: "변경할 사진의 총 용량이 너무 큽니다." }, 413);
+    const bytes = new Uint8Array(await value.arrayBuffer());
+    const type = detectImageType(bytes);
+    if (type !== "image/webp") return adminJson({ ok: false, error: `${slotInfo.label} 저장 파일은 WebP여야 합니다.` }, 415);
+    const dimensions = readImageDimensions(bytes, type);
+    if (!dimensions || dimensions.width < 1 || dimensions.height < 1) return adminJson({ ok: false, error: `${slotInfo.label} 이미지 해상도를 확인할 수 없습니다.` }, 415);
+    if (dimensions.width > MAX_IMAGE_EDGE || dimensions.height > MAX_IMAGE_EDGE) return adminJson({ ok: false, error: `${slotInfo.label} 이미지의 가로/세로는 ${MAX_IMAGE_EDGE}px 이하여야 합니다.` }, 400);
+    imageChanges.push({ slot, path: slotInfo.path, bytes, width: dimensions.width, height: dimensions.height });
+  }
+
+  if (!textChanged && imageChanges.length === 0) {
+    return adminJson({ ok: true, noChanges: true, message: "변경된 내용이 없습니다." });
+  }
+
+  const now = new Date();
+  const version = String(now.getTime());
+  const nextContent = {
+    ...currentContent,
+    version,
+    updatedAt: now.toISOString(),
+    text: nextText
+  };
+
+  // 공개 페이지는 요청 시 Worker가 가공하지 않습니다.
+  // 저장 시점에 실제 HTML 파일 자체를 수정해 GitHub에 커밋하고,
+  // 이후 일반 방문자는 Cloudflare Static Assets만 받습니다.
+  let staticHtmlFiles;
+  try {
+    staticHtmlFiles = await buildStaticHtmlFiles(env, request.url, nextText, version);
+  } catch (error) {
+    console.error("Static HTML build failed", error);
+    return adminJson({ ok: false, error: "정적 페이지 생성에 실패했습니다. 공개 사이트 파일은 변경되지 않았습니다." }, 500);
+  }
+
+  const contentBytes = new TextEncoder().encode(JSON.stringify(nextContent, null, 2) + "\n");
+  const files = [
+    ...staticHtmlFiles,
+    { path: CONTENT_PATH, bytes: contentBytes },
+    ...imageChanges.map((item) => ({ path: item.path, bytes: item.bytes }))
+  ];
+
+  let result;
+  try {
+    result = await commitFilesToGitHub(env, files, `chore(site): publish static content via bellemyunail admin (${session.login})`);
+  } catch (error) {
+    console.error("Admin static publish failed", error);
+    return adminJson({ ok: false, error: String(error?.message || "GitHub 저장에 실패했습니다.").slice(0, 500) }, 502);
+  }
+
+  return adminJson({
+    ok: true,
+    changedText: textChanged,
+    changedImages: imageChanges.map(({ slot, width, height }) => ({ slot, width, height })),
+    changedPages: staticHtmlFiles.map((file) => file.path),
+    commitSha: result.sha,
+    commitUrl: result.url,
+    updatedAt: now.toISOString(),
+    version,
+    message: "정적 HTML과 이미지를 한 번의 GitHub 커밋으로 저장했습니다. Cloudflare 자동 배포가 끝나면 공개 사이트에 반영됩니다."
+  });
+}
+
+async function buildStaticHtmlFiles(env, requestUrl, textValues, version) {
+  const origin = new URL(requestUrl).origin;
+  const files = [];
+
+  for (const page of STATIC_PAGES) {
+    const source = await env.ASSETS.fetch(new Request(`${origin}${page.assetPath}`, { method: "GET" }));
+    if (!source.ok) throw new Error(`페이지 원본을 불러오지 못했습니다: ${page.assetPath}`);
+    const contentType = source.headers.get("Content-Type") || "";
+    if (!contentType.includes("text/html")) throw new Error(`HTML 페이지가 아닙니다: ${page.assetPath}`);
+
+    const rewriter = new HTMLRewriter()
+      .on("[data-edit-key]", {
+        element(element) {
+          const key = element.getAttribute("data-edit-key") || "";
+          if (Object.prototype.hasOwnProperty.call(textValues, key) && typeof textValues[key] === "string") {
+            // html 옵션을 사용하지 않으므로 관리자 입력은 항상 plain text로 escape됩니다.
+            element.setInnerContent(textValues[key]);
+          }
+        }
+      })
+      .on("img[data-media-slot]", {
+        element(element) {
+          const slot = element.getAttribute("data-media-slot") || "";
+          const info = SLOTS[slot];
+          if (info) element.setAttribute("src", `${info.publicUrl}?v=${encodeURIComponent(version)}`);
+        }
+      })
+      .on("[data-lightbox-src]", {
+        element(element) {
+          const value = element.getAttribute("data-lightbox-src") || "";
+          if (value.startsWith("/assets/images/")) {
+            element.setAttribute("data-lightbox-src", `${value.split("?")[0]}?v=${encodeURIComponent(version)}`);
+          }
+        }
+      })
+      .on("script[data-faq-schema]", {
+        element(element) {
+          const faqItems = [];
+          for (let i = 1; i <= 6; i++) {
+            const index = String(i).padStart(2, "0");
+            const q = textValues[`faq.item${index}.question`];
+            const a = textValues[`faq.item${index}.answer`];
+            if (typeof q === "string" && typeof a === "string") {
+              faqItems.push({
+                "@type": "Question",
+                name: q,
+                acceptedAnswer: { "@type": "Answer", text: a }
+              });
+            }
+          }
+          if (faqItems.length) {
+            element.setInnerContent(JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqItems }));
+          }
+        }
+      });
+
+    const transformed = rewriter.transform(source);
+    const html = await transformed.text();
+    files.push({ path: page.repoPath, bytes: new TextEncoder().encode(html) });
+  }
+
+  return files;
+}
+
+async function commitFilesToGitHub(env, files, message) {
+  const token = await createInstallationToken(env);
+  const owner = String(env.GITHUB_OWNER || "").trim();
+  const repo = String(env.GITHUB_REPO || "").trim();
+  const branch = String(env.GITHUB_BRANCH || "main").trim();
+  const headers = githubHeaders(token);
+  const api = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;
+
+  const refRes = await fetch(`${api}/git/ref/heads/${branch.split("/").map(encodeURIComponent).join("/")}`, { headers });
+  const refData = await refRes.json().catch(() => ({}));
+  if (!refRes.ok || !refData?.object?.sha) throw new Error(`GitHub 브랜치 정보를 확인하지 못했습니다. ${await responseDetail(refRes, refData)}`);
+  const headSha = String(refData.object.sha);
+
+  const commitRes = await fetch(`${api}/git/commits/${encodeURIComponent(headSha)}`, { headers });
+  const commitData = await commitRes.json().catch(() => ({}));
+  if (!commitRes.ok || !commitData?.tree?.sha) throw new Error(`GitHub 현재 커밋 정보를 확인하지 못했습니다. ${await responseDetail(commitRes, commitData)}`);
+  const baseTreeSha = String(commitData.tree.sha);
+
+  const treeEntries = [];
+  for (const file of files) {
+    const blobRes = await fetch(`${api}/git/blobs`, {
+      method: "POST",
+      headers: { ...headers, "Content-Type": "application/json" },
+      body: JSON.stringify({ content: bytesToBase64(file.bytes), encoding: "base64" })
+    });
+    const blob = await blobRes.json().catch(() => ({}));
+    if (!blobRes.ok || !blob?.sha) throw new Error(`GitHub 파일 저장 준비에 실패했습니다 (${file.path}). ${await responseDetail(blobRes, blob)}`);
+    treeEntries.push({ path: file.path, mode: "100644", type: "blob", sha: String(blob.sha) });
+  }
+
+  const treeRes = await fetch(`${api}/git/trees`, {
+    method: "POST",
+    headers: { ...headers, "Content-Type": "application/json" },
+    body: JSON.stringify({ base_tree: baseTreeSha, tree: treeEntries })
+  });
+  const tree = await treeRes.json().catch(() => ({}));
+  if (!treeRes.ok || !tree?.sha) throw new Error(`GitHub 변경 트리 생성에 실패했습니다. ${await responseDetail(treeRes, tree)}`);
+
+  const newCommitRes = await fetch(`${api}/git/commits`, {
+    method: "POST",
+    headers: { ...headers, "Content-Type": "application/json" },
+    body: JSON.stringify({ message, tree: tree.sha, parents: [headSha] })
+  });
+  const newCommit = await newCommitRes.json().catch(() => ({}));
+  if (!newCommitRes.ok || !newCommit?.sha) throw new Error(`GitHub 커밋 생성에 실패했습니다. ${await responseDetail(newCommitRes, newCommit)}`);
+
+  const updateRefRes = await fetch(`${api}/git/refs/heads/${branch.split("/").map(encodeURIComponent).join("/")}`, {
+    method: "PATCH",
+    headers: { ...headers, "Content-Type": "application/json" },
+    body: JSON.stringify({ sha: newCommit.sha, force: false })
+  });
+  const updatedRef = await updateRefRes.json().catch(() => ({}));
+  if (!updateRefRes.ok) throw new Error(`GitHub 브랜치 반영에 실패했습니다. 다른 변경이 먼저 반영되었다면 관리자 화면을 새로고침 후 다시 저장해 주세요. ${await responseDetail(updateRefRes, updatedRef)}`);
+
+  return { sha: String(newCommit.sha), url: `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/commit/${encodeURIComponent(String(newCommit.sha))}` };
+}
+
+async function responseDetail(response, data) {
+  const message = String(data?.message || "").slice(0, 180);
+  return message ? `(${response.status}: ${message})` : `(${response.status})`;
+}
 
 async function startGitHubLogin(request, env) {
   const configError = validateAuthConfig(env);
