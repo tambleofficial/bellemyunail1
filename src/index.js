@@ -1,33 +1,22 @@
-const SLOTS = Object.freeze({
-  space: { label: "매장 공간", path: "public/assets/images/space.webp", publicUrl: "/assets/images/space.webp" },
-  "nail-01": { label: "네일 포트폴리오 01", path: "public/assets/images/nail-01.webp", publicUrl: "/assets/images/nail-01.webp" },
-  "nail-02": { label: "네일 포트폴리오 02", path: "public/assets/images/nail-02.webp", publicUrl: "/assets/images/nail-02.webp" },
-  "nail-03": { label: "네일 포트폴리오 03", path: "public/assets/images/nail-03.webp", publicUrl: "/assets/images/nail-03.webp" },
-  "nail-04": { label: "네일 포트폴리오 04", path: "public/assets/images/nail-04.webp", publicUrl: "/assets/images/nail-04.webp" },
-  "nail-05": { label: "네일 포트폴리오 05", path: "public/assets/images/nail-05.webp", publicUrl: "/assets/images/nail-05.webp" },
-  "nail-06": { label: "네일 포트폴리오 06", path: "public/assets/images/nail-06.webp", publicUrl: "/assets/images/nail-06.webp" },
-  "nail-07": { label: "네일 포트폴리오 07", path: "public/assets/images/nail-07.webp", publicUrl: "/assets/images/nail-07.webp" },
-  "nail-08": { label: "네일 포트폴리오 08", path: "public/assets/images/nail-08.webp", publicUrl: "/assets/images/nail-08.webp" }
-});
-
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 const MAX_IMAGE_EDGE = 4096;
+const MAX_BATCH_BYTES = 30 * 1024 * 1024;
 const SESSION_TTL_SECONDS = 8 * 60 * 60;
 const OAUTH_TTL_SECONDS = 10 * 60;
 const SESSION_COOKIE = "__Secure-bellemyu_admin";
 const OAUTH_COOKIE = "__Secure-bellemyu_oauth";
 const GITHUB_API_VERSION = "2022-11-28";
-const CONTENT_PATH = "public/content/site-content.json";
-const EDITOR_MANIFEST_PATH = "/content/editor-manifest.json";
-const SITE_CONTENT_ASSET_PATH = "/content/site-content.json";
-const MAX_BATCH_BYTES = 30 * 1024 * 1024;
+const EDIT_KEY_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,119}$/;
+const MEDIA_SLOT_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
+const MAX_TEXT_LENGTH = 1200;
+
 const STATIC_PAGES = Object.freeze([
-  { id: "home", assetPath: "/", repoPath: "public/index.html" },
-  { id: "design", assetPath: "/nail-design/", repoPath: "public/nail-design/index.html" },
-  { id: "process", assetPath: "/process/", repoPath: "public/process/index.html" },
-  { id: "portfolio", assetPath: "/portfolio/", repoPath: "public/portfolio/index.html" },
-  { id: "visit", assetPath: "/visit/", repoPath: "public/visit/index.html" },
-  { id: "faq", assetPath: "/faq/", repoPath: "public/faq/index.html" }
+  { id: "home", label: "홈", publicPath: "/", repoPath: "public/index.html" },
+  { id: "design", label: "네일 디자인", publicPath: "/nail-design/", repoPath: "public/nail-design/index.html" },
+  { id: "process", label: "시술 과정", publicPath: "/process/", repoPath: "public/process/index.html" },
+  { id: "portfolio", label: "포트폴리오", publicPath: "/portfolio/", repoPath: "public/portfolio/index.html" },
+  { id: "visit", label: "방문 안내", publicPath: "/visit/", repoPath: "public/visit/index.html" },
+  { id: "faq", label: "자주 묻는 질문", publicPath: "/faq/", repoPath: "public/faq/index.html" }
 ]);
 
 export default {
@@ -40,12 +29,10 @@ export default {
         if (request.method !== "GET") return methodNotAllowed("GET");
         return startGitHubLogin(request, env);
       }
-
       if (path === "/admin/auth/callback") {
         if (request.method !== "GET") return methodNotAllowed("GET");
         return finishGitHubLogin(request, env);
       }
-
       if (path === "/admin/api/me") {
         if (request.method !== "GET") return methodNotAllowed("GET");
         const session = await requireAdminSession(request, env);
@@ -57,14 +44,18 @@ export default {
           repository: `${env.GITHUB_OWNER}/${env.GITHUB_REPO}`
         });
       }
-
       if (path === "/admin/api/editor-state") {
         if (request.method !== "GET") return methodNotAllowed("GET");
         const session = await requireAdminSession(request, env);
         if (session instanceof Response) return session;
         return getEditorState(request, env, session);
       }
-
+      if (path === "/admin/api/preview") {
+        if (request.method !== "GET") return methodNotAllowed("GET");
+        const session = await requireAdminSession(request, env);
+        if (session instanceof Response) return previewLoginExpired();
+        return getSecurePreview(request, env);
+      }
       if (path === "/admin/api/save") {
         if (request.method !== "POST") return methodNotAllowed("POST");
         const session = await requireAdminSession(request, env);
@@ -73,14 +64,6 @@ export default {
         if (csrfError) return csrfError;
         return saveEditorChanges(request, env, session);
       }
-
-      if (path === "/admin/api/slots") {
-        if (request.method !== "GET") return methodNotAllowed("GET");
-        const session = await requireAdminSession(request, env);
-        if (session instanceof Response) return session;
-        return adminJson({ ok: true, slots: SLOTS });
-      }
-
       if (path === "/admin/api/logout") {
         if (request.method !== "POST") return methodNotAllowed("POST");
         const session = await requireAdminSession(request, env);
@@ -89,44 +72,68 @@ export default {
         if (csrfError) return csrfError;
         return adminJson({ ok: true }, 200, { "Set-Cookie": clearCookie(SESSION_COOKIE, "/admin") });
       }
-
       if (path === "/admin" || path.startsWith("/admin/")) {
         const assetResponse = await env.ASSETS.fetch(request);
         return withAdminHeaders(assetResponse);
       }
-
       return env.ASSETS.fetch(request);
     } catch (error) {
       console.error("Unhandled error", error);
-      if (path.startsWith("/admin")) {
-        return adminJson({ ok: false, error: "서버 처리 중 오류가 발생했습니다." }, 500);
-      }
+      if (path.startsWith("/admin")) return adminJson({ ok: false, error: "서버 처리 중 오류가 발생했습니다." }, 500);
       return json({ ok: false, error: "서버 처리 중 오류가 발생했습니다." }, 500);
     }
   }
 };
 
-async function loadAssetJson(env, requestUrl, assetPath) {
-  const origin = new URL(requestUrl).origin;
-  const response = await env.ASSETS.fetch(new Request(`${origin}${assetPath}`, { method: "GET" }));
-  if (!response.ok) throw new Error(`필수 사이트 데이터(${assetPath})를 불러오지 못했습니다.`);
-  return response.json();
+async function getEditorState(request, env, session) {
+  const configError = validateGitHubWriteConfig(env);
+  if (configError) return adminJson({ ok: false, error: configError }, 503);
+
+  let token = "";
+  try {
+    token = await createInstallationToken(env);
+    const snapshot = await loadRepositorySnapshot(env, token);
+    const model = discoverEditorModel(snapshot.pages);
+    return adminJson({
+      ok: true,
+      user: { id: session.uid, login: session.login, avatarUrl: session.avatarUrl || "" },
+      csrfToken: session.csrf,
+      repository: `${env.GITHUB_OWNER}/${env.GITHUB_REPO}`,
+      baseSha: snapshot.headSha,
+      pages: STATIC_PAGES.map(({ id, label, publicPath }) => ({ id, label, path: publicPath })),
+      text: model.text,
+      images: model.images,
+      stats: model.stats
+    });
+  } catch (error) {
+    console.error("Editor state discovery failed", error);
+    return adminJson({ ok: false, error: String(error?.message || "편집 항목을 자동 탐색하지 못했습니다.").slice(0, 500) }, 502);
+  } finally {
+    if (token) await revokeInstallationToken(token);
+  }
 }
 
-async function getEditorState(request, env, session) {
-  const [content, manifest] = await Promise.all([
-    loadAssetJson(env, request.url, SITE_CONTENT_ASSET_PATH),
-    loadAssetJson(env, request.url, EDITOR_MANIFEST_PATH)
-  ]);
-  return adminJson({
-    ok: true,
-    user: { id: session.uid, login: session.login, avatarUrl: session.avatarUrl || "" },
-    csrfToken: session.csrf,
-    repository: `${env.GITHUB_OWNER}/${env.GITHUB_REPO}`,
-    content,
-    manifest,
-    slots: SLOTS
-  });
+async function getSecurePreview(request, env) {
+  const url = new URL(request.url);
+  const pageId = String(url.searchParams.get("page") || "home");
+  const bridgeNonce = String(url.searchParams.get("nonce") || "");
+  const page = STATIC_PAGES.find((item) => item.id === pageId);
+  if (!page || !/^[A-Za-z0-9_-]{16,100}$/.test(bridgeNonce)) {
+    return previewError("미리보기 요청이 올바르지 않습니다.", 400);
+  }
+
+  let token = "";
+  try {
+    token = await createInstallationToken(env);
+    const headSha = await getRepositoryHeadSha(env, token);
+    const html = await getRepositoryTextFile(env, token, page.repoPath, headSha);
+    return buildSandboxPreview(html, url.origin, bridgeNonce);
+  } catch (error) {
+    console.error("Secure preview failed", error);
+    return previewError("미리보기를 불러오지 못했습니다. 관리자 화면을 새로고침해 주세요.", 502);
+  } finally {
+    if (token) await revokeInstallationToken(token);
+  }
 }
 
 async function saveEditorChanges(request, env, session) {
@@ -139,185 +146,370 @@ async function saveEditorChanges(request, env, session) {
   }
 
   const form = await request.formData();
-  const payloadRaw = form.get("content");
-  if (typeof payloadRaw !== "string") return adminJson({ ok: false, error: "문구 데이터가 필요합니다." }, 400);
+  const raw = form.get("changes");
+  if (typeof raw !== "string") return adminJson({ ok: false, error: "변경 데이터가 필요합니다." }, 400);
 
   let submitted;
-  try { submitted = JSON.parse(payloadRaw); } catch { return adminJson({ ok: false, error: "문구 데이터 형식이 올바르지 않습니다." }, 400); }
+  try { submitted = JSON.parse(raw); } catch { return adminJson({ ok: false, error: "변경 데이터 형식이 올바르지 않습니다." }, 400); }
+  const baseSha = String(submitted?.baseSha || "");
+  const textChanges = submitted?.text && typeof submitted.text === "object" && !Array.isArray(submitted.text) ? submitted.text : {};
+  if (!/^[0-9a-f]{40}$/i.test(baseSha)) return adminJson({ ok: false, error: "편집 기준 커밋을 확인할 수 없습니다. 관리자 페이지를 새로고침해 주세요." }, 409);
 
-  const [currentContent, manifest] = await Promise.all([
-    loadAssetJson(env, request.url, SITE_CONTENT_ASSET_PATH),
-    loadAssetJson(env, request.url, EDITOR_MANIFEST_PATH)
-  ]);
-  const allowedText = currentContent && typeof currentContent.text === "object" ? currentContent.text : {};
-  const submittedText = submitted && typeof submitted.text === "object" ? submitted.text : null;
-  if (!submittedText) return adminJson({ ok: false, error: "저장할 문구를 확인할 수 없습니다." }, 400);
+  let token = "";
+  try {
+    token = await createInstallationToken(env);
+    const currentHeadSha = await getRepositoryHeadSha(env, token);
+    if (!timingSafeEqualString(currentHeadSha, baseSha)) {
+      return adminJson({
+        ok: false,
+        code: "STALE_EDITOR",
+        error: "편집을 시작한 뒤 GitHub 저장소가 변경되었습니다. 다른 변경을 덮어쓰지 않도록 저장을 중단했습니다. 관리자 페이지를 새로고침한 뒤 다시 수정해 주세요."
+      }, 409);
+    }
 
-  const nextText = {};
-  let textChanged = false;
-  for (const key of Object.keys(allowedText)) {
-    const value = Object.prototype.hasOwnProperty.call(submittedText, key) ? submittedText[key] : allowedText[key];
-    if (typeof value !== "string") return adminJson({ ok: false, error: `문구 값이 올바르지 않습니다: ${key}` }, 400);
-    const maxLength = Number(manifest?.text?.[key]?.maxLength || 1200);
-    if (value.length > maxLength) return adminJson({ ok: false, error: `문구가 너무 깁니다: ${manifest?.text?.[key]?.label || key}` }, 400);
-    nextText[key] = value;
-    if (value !== allowedText[key]) textChanged = true;
+    const pages = await loadRepositoryPages(env, token, currentHeadSha);
+    const model = discoverEditorModel(pages);
+    const normalizedTextChanges = {};
+
+    for (const [key, value] of Object.entries(textChanges)) {
+      const meta = model.text[key];
+      if (!meta || !EDIT_KEY_PATTERN.test(key)) return adminJson({ ok: false, error: `허용되지 않은 문구 키입니다: ${key}` }, 400);
+      if (typeof value !== "string") return adminJson({ ok: false, error: `문구 값이 올바르지 않습니다: ${key}` }, 400);
+      if (value.length > meta.maxLength) return adminJson({ ok: false, error: `문구가 너무 깁니다: ${meta.label}` }, 400);
+      if (value !== meta.value) normalizedTextChanges[key] = value;
+    }
+
+    const imageChanges = [];
+    let totalImageBytes = 0;
+    for (const [name, value] of form.entries()) {
+      if (!name.startsWith("image:") || !(value instanceof File)) continue;
+      const slot = name.slice("image:".length);
+      const meta = model.images[slot];
+      if (!meta || !MEDIA_SLOT_PATTERN.test(slot) || !isSafeMediaBinding(slot, meta.publicUrl)) {
+        return adminJson({ ok: false, error: `허용되지 않은 이미지 슬롯입니다: ${slot}` }, 400);
+      }
+      if (value.size <= 0 || value.size > MAX_UPLOAD_BYTES) return adminJson({ ok: false, error: `${meta.label} 이미지는 10MB 이하여야 합니다.` }, 413);
+      totalImageBytes += value.size;
+      if (totalImageBytes > MAX_BATCH_BYTES) return adminJson({ ok: false, error: "변경할 사진의 총 용량이 너무 큽니다." }, 413);
+      const bytes = new Uint8Array(await value.arrayBuffer());
+      const type = detectImageType(bytes);
+      if (type !== "image/webp") return adminJson({ ok: false, error: `${meta.label} 저장 파일은 WebP여야 합니다.` }, 415);
+      const dimensions = readImageDimensions(bytes, type);
+      if (!dimensions || dimensions.width < 1 || dimensions.height < 1) return adminJson({ ok: false, error: `${meta.label} 이미지 해상도를 확인할 수 없습니다.` }, 415);
+      if (dimensions.width > MAX_IMAGE_EDGE || dimensions.height > MAX_IMAGE_EDGE) return adminJson({ ok: false, error: `${meta.label} 이미지의 가로/세로는 ${MAX_IMAGE_EDGE}px 이하여야 합니다.` }, 400);
+      imageChanges.push({ slot, path: meta.repoPath, publicUrl: meta.publicUrl, bytes, width: dimensions.width, height: dimensions.height });
+    }
+
+    if (Object.keys(normalizedTextChanges).length === 0 && imageChanges.length === 0) {
+      return adminJson({ ok: true, noChanges: true, baseSha: currentHeadSha, message: "변경된 내용이 없습니다." });
+    }
+
+    const version = String(Date.now());
+    const changedSlots = new Set(imageChanges.map((item) => item.slot));
+    const files = [];
+    for (const page of pages) {
+      const html = await applyEditorChangesToHtml(page.html, normalizedTextChanges, changedSlots, model.images, version);
+      if (html !== page.html) files.push({ path: page.repoPath, bytes: new TextEncoder().encode(html) });
+    }
+    for (const image of imageChanges) files.push({ path: image.path, bytes: image.bytes });
+
+    const result = await commitFilesToGitHubWithToken(
+      env,
+      token,
+      files,
+      `chore(site): publish visual editor changes (${session.login})`,
+      currentHeadSha
+    );
+
+    return adminJson({
+      ok: true,
+      commitSha: result.sha,
+      commitUrl: result.url,
+      baseSha: result.sha,
+      changedTextKeys: Object.keys(normalizedTextChanges),
+      changedImages: imageChanges.map(({ slot, width, height }) => ({ slot, width, height })),
+      changedPages: files.filter((file) => file.path.endsWith(".html")).map((file) => file.path),
+      message: "GitHub에 한 번의 커밋으로 저장했습니다. Cloudflare 자동 배포가 끝나면 공개 사이트에 반영됩니다."
+    });
+  } catch (error) {
+    console.error("Visual editor save failed", error);
+    return adminJson({ ok: false, error: String(error?.message || "GitHub 저장에 실패했습니다.").slice(0, 500) }, 502);
+  } finally {
+    if (token) await revokeInstallationToken(token);
   }
-  for (const key of Object.keys(submittedText)) {
-    if (!Object.prototype.hasOwnProperty.call(allowedText, key)) {
-      return adminJson({ ok: false, error: `허용되지 않은 문구 키입니다: ${key}` }, 400);
+}
+
+async function loadRepositorySnapshot(env, token) {
+  const headSha = await getRepositoryHeadSha(env, token);
+  const pages = await loadRepositoryPages(env, token, headSha);
+  return { headSha, pages };
+}
+
+async function loadRepositoryPages(env, token, ref) {
+  return Promise.all(STATIC_PAGES.map(async (page) => ({
+    ...page,
+    html: await getRepositoryTextFile(env, token, page.repoPath, ref)
+  })));
+}
+
+async function getRepositoryHeadSha(env, token) {
+  const owner = String(env.GITHUB_OWNER || "").trim();
+  const repo = String(env.GITHUB_REPO || "").trim();
+  const branch = String(env.GITHUB_BRANCH || "main").trim();
+  const headers = githubHeaders(token);
+  const branchPath = branch.split("/").map(encodeURIComponent).join("/");
+  const response = await fetch(`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/ref/heads/${branchPath}`, { headers });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data?.object?.sha) throw new Error(`GitHub 브랜치 정보를 확인하지 못했습니다. ${await responseDetail(response, data)}`);
+  return String(data.object.sha);
+}
+
+async function getRepositoryTextFile(env, token, repoPath, ref) {
+  const owner = String(env.GITHUB_OWNER || "").trim();
+  const repo = String(env.GITHUB_REPO || "").trim();
+  const encodedPath = repoPath.split("/").map(encodeURIComponent).join("/");
+  const response = await fetch(`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodedPath}?ref=${encodeURIComponent(ref)}`, {
+    headers: githubHeaders(token)
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data?.type !== "file" || data?.encoding !== "base64" || typeof data?.content !== "string") {
+    throw new Error(`GitHub에서 ${repoPath} 파일을 읽지 못했습니다. ${await responseDetail(response, data)}`);
+  }
+  return base64ToUtf8(data.content);
+}
+
+function discoverEditorModel(pages) {
+  const text = Object.create(null);
+  const images = Object.create(null);
+  let textOccurrences = 0;
+  let imageOccurrences = 0;
+
+  for (const page of pages) {
+    const textMarkers = extractTextMarkers(page.html);
+    for (const marker of textMarkers) {
+      if (!EDIT_KEY_PATTERN.test(marker.key)) continue;
+      textOccurrences++;
+      const label = marker.label || marker.key;
+      const section = marker.section || sectionFromLabel(label);
+      const maxLength = clampInt(marker.maxLength || MAX_TEXT_LENGTH, 1, 5000);
+      if (!text[marker.key]) {
+        text[marker.key] = {
+          key: marker.key,
+          label,
+          value: marker.value,
+          maxLength,
+          usages: [],
+          inconsistent: false
+        };
+      } else if (text[marker.key].value !== marker.value) {
+        text[marker.key].inconsistent = true;
+      }
+      pushUsage(text[marker.key].usages, {
+        pageId: page.id,
+        page: page.label,
+        path: page.publicPath,
+        section,
+        count: 1
+      });
+    }
+
+    const imageMarkers = extractImageMarkers(page.html);
+    for (const marker of imageMarkers) {
+      if (!MEDIA_SLOT_PATTERN.test(marker.slot) || !isSafeMediaBinding(marker.slot, marker.publicUrl)) continue;
+      imageOccurrences++;
+      const repoPath = `public${stripQueryAndHash(marker.publicUrl)}`;
+      const label = getMediaDisplayLabel(marker.slot, marker.label);
+      const context = marker.context || "이미지";
+      if (!images[marker.slot]) {
+        images[marker.slot] = {
+          slot: marker.slot,
+          label,
+          publicUrl: stripQueryAndHash(marker.publicUrl),
+          repoPath,
+          usages: []
+        };
+      } else if (images[marker.slot].publicUrl !== stripQueryAndHash(marker.publicUrl)) {
+        images[marker.slot].invalidBinding = true;
+      }
+      pushUsage(images[marker.slot].usages, {
+        pageId: page.id,
+        page: page.label,
+        path: page.publicPath,
+        section: context,
+        count: 1
+      });
     }
   }
 
-  const imageChanges = [];
-  let totalImageBytes = 0;
-  for (const [name, value] of form.entries()) {
-    if (!name.startsWith("image:") || !(value instanceof File)) continue;
-    const slot = name.slice("image:".length);
-    const slotInfo = SLOTS[slot];
-    if (!slotInfo) return adminJson({ ok: false, error: `허용되지 않은 이미지 슬롯입니다: ${slot}` }, 400);
-    if (value.size <= 0 || value.size > MAX_UPLOAD_BYTES) return adminJson({ ok: false, error: `${slotInfo.label} 이미지는 10MB 이하여야 합니다.` }, 413);
-    totalImageBytes += value.size;
-    if (totalImageBytes > MAX_BATCH_BYTES) return adminJson({ ok: false, error: "변경할 사진의 총 용량이 너무 큽니다." }, 413);
-    const bytes = new Uint8Array(await value.arrayBuffer());
-    const type = detectImageType(bytes);
-    if (type !== "image/webp") return adminJson({ ok: false, error: `${slotInfo.label} 저장 파일은 WebP여야 합니다.` }, 415);
-    const dimensions = readImageDimensions(bytes, type);
-    if (!dimensions || dimensions.width < 1 || dimensions.height < 1) return adminJson({ ok: false, error: `${slotInfo.label} 이미지 해상도를 확인할 수 없습니다.` }, 415);
-    if (dimensions.width > MAX_IMAGE_EDGE || dimensions.height > MAX_IMAGE_EDGE) return adminJson({ ok: false, error: `${slotInfo.label} 이미지의 가로/세로는 ${MAX_IMAGE_EDGE}px 이하여야 합니다.` }, 400);
-    imageChanges.push({ slot, path: slotInfo.path, bytes, width: dimensions.width, height: dimensions.height });
+  for (const [slot, meta] of Object.entries(images)) {
+    if (meta.invalidBinding) delete images[slot];
+    else meta.totalUses = meta.usages.reduce((sum, item) => sum + Number(item.count || 1), 0);
   }
 
-  if (!textChanged && imageChanges.length === 0) {
-    return adminJson({ ok: true, noChanges: true, message: "변경된 내용이 없습니다." });
-  }
-
-  const now = new Date();
-  const version = String(now.getTime());
-  const nextContent = {
-    ...currentContent,
-    version,
-    updatedAt: now.toISOString(),
-    text: nextText
+  return {
+    text,
+    images,
+    stats: {
+      pages: pages.length,
+      textKeys: Object.keys(text).length,
+      textOccurrences,
+      imageSlots: Object.keys(images).length,
+      imageOccurrences
+    }
   };
+}
 
-  // 공개 페이지는 요청 시 Worker가 가공하지 않습니다.
-  // 저장 시점에 실제 HTML 파일 자체를 수정해 GitHub에 커밋하고,
-  // 이후 일반 방문자는 Cloudflare Static Assets만 받습니다.
-  let staticHtmlFiles;
-  try {
-    staticHtmlFiles = await buildStaticHtmlFiles(env, request.url, nextText, version);
-  } catch (error) {
-    console.error("Static HTML build failed", error);
-    return adminJson({ ok: false, error: "정적 페이지 생성에 실패했습니다. 공개 사이트 파일은 변경되지 않았습니다." }, 500);
+function extractTextMarkers(html) {
+  const out = [];
+  const re = /<([a-zA-Z][\w:-]*)\b([^>]*)\bdata-edit-key=([\'"])([^\'"]+)\3([^>]*)>([\s\S]*?)<\/\1\s*>/g;
+  let match;
+  while ((match = re.exec(html))) {
+    const inner = match[6];
+    if (/<[a-zA-Z][^>]*>/.test(inner)) continue;
+    const attrs = `${match[2]} ${match[5]}`;
+    out.push({
+      key: match[4].trim(),
+      label: getAttr(attrs, "data-edit-label"),
+      section: getAttr(attrs, "data-edit-section"),
+      maxLength: getAttr(attrs, "data-edit-max"),
+      value: decodeHtmlEntities(inner.replace(/<!--[\s\S]*?-->/g, "").trim())
+    });
   }
+  return out;
+}
 
-  const contentBytes = new TextEncoder().encode(JSON.stringify(nextContent, null, 2) + "\n");
-  const files = [
-    ...staticHtmlFiles,
-    { path: CONTENT_PATH, bytes: contentBytes },
-    ...imageChanges.map((item) => ({ path: item.path, bytes: item.bytes }))
-  ];
-
-  let result;
-  try {
-    result = await commitFilesToGitHub(env, files, `chore(site): publish static content via bellemyunail admin (${session.login})`);
-  } catch (error) {
-    console.error("Admin static publish failed", error);
-    return adminJson({ ok: false, error: String(error?.message || "GitHub 저장에 실패했습니다.").slice(0, 500) }, 502);
+function extractImageMarkers(html) {
+  const out = [];
+  const re = /<img\b([^>]*\bdata-media-slot=([\'"])([^\'"]+)\2[^>]*)\/?\s*>/gi;
+  let match;
+  while ((match = re.exec(html))) {
+    const attrs = match[1];
+    const slot = match[3].trim();
+    const src = getAttr(attrs, "src");
+    if (!src) continue;
+    out.push({
+      slot,
+      publicUrl: src,
+      label: getAttr(attrs, "data-media-label") || getAttr(attrs, "alt"),
+      context: getAttr(attrs, "data-media-context")
+    });
   }
+  return out;
+}
 
-  return adminJson({
-    ok: true,
-    changedText: textChanged,
-    changedImages: imageChanges.map(({ slot, width, height }) => ({ slot, width, height })),
-    changedPages: staticHtmlFiles.map((file) => file.path),
-    commitSha: result.sha,
-    commitUrl: result.url,
-    updatedAt: now.toISOString(),
-    version,
-    message: "정적 HTML과 이미지를 한 번의 GitHub 커밋으로 저장했습니다. Cloudflare 자동 배포가 끝나면 공개 사이트에 반영됩니다."
+function pushUsage(usages, usage) {
+  const existing = usages.find((item) => item.pageId === usage.pageId && item.section === usage.section);
+  if (existing) existing.count += usage.count;
+  else usages.push(usage);
+}
+
+function getAttr(attrs, name) {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = String(attrs || "").match(new RegExp(`(?:^|\\s)${escaped}\\s*=\\s*([\"'])([\\s\\S]*?)\\1`, "i"));
+  return match ? decodeHtmlEntities(match[2]) : "";
+}
+
+function decodeHtmlEntities(value) {
+  return String(value || "").replace(/&(#x?[0-9a-fA-F]+|amp|lt|gt|quot|apos|#39|nbsp);/g, (all, entity) => {
+    const lower = entity.toLowerCase();
+    if (lower === "amp") return "&";
+    if (lower === "lt") return "<";
+    if (lower === "gt") return ">";
+    if (lower === "quot") return '"';
+    if (lower === "apos" || lower === "#39") return "'";
+    if (lower === "nbsp") return " ";
+    if (lower.startsWith("#x")) return String.fromCodePoint(parseInt(lower.slice(2), 16));
+    if (lower.startsWith("#")) return String.fromCodePoint(parseInt(lower.slice(1), 10));
+    return all;
   });
 }
 
-async function buildStaticHtmlFiles(env, requestUrl, textValues, version) {
-  const origin = new URL(requestUrl).origin;
-  const files = [];
-
-  for (const page of STATIC_PAGES) {
-    const source = await env.ASSETS.fetch(new Request(`${origin}${page.assetPath}`, { method: "GET" }));
-    if (!source.ok) throw new Error(`페이지 원본을 불러오지 못했습니다: ${page.assetPath}`);
-    const contentType = source.headers.get("Content-Type") || "";
-    if (!contentType.includes("text/html")) throw new Error(`HTML 페이지가 아닙니다: ${page.assetPath}`);
-
-    const rewriter = new HTMLRewriter()
-      .on("[data-edit-key]", {
-        element(element) {
-          const key = element.getAttribute("data-edit-key") || "";
-          if (Object.prototype.hasOwnProperty.call(textValues, key) && typeof textValues[key] === "string") {
-            // html 옵션을 사용하지 않으므로 관리자 입력은 항상 plain text로 escape됩니다.
-            element.setInnerContent(textValues[key]);
-          }
-        }
-      })
-      .on("img[data-media-slot]", {
-        element(element) {
-          const slot = element.getAttribute("data-media-slot") || "";
-          const info = SLOTS[slot];
-          if (info) element.setAttribute("src", `${info.publicUrl}?v=${encodeURIComponent(version)}`);
-        }
-      })
-      .on("[data-lightbox-src]", {
-        element(element) {
-          const value = element.getAttribute("data-lightbox-src") || "";
-          if (value.startsWith("/assets/images/")) {
-            element.setAttribute("data-lightbox-src", `${value.split("?")[0]}?v=${encodeURIComponent(version)}`);
-          }
-        }
-      })
-      .on("script[data-faq-schema]", {
-        element(element) {
-          const faqItems = [];
-          for (let i = 1; i <= 6; i++) {
-            const index = String(i).padStart(2, "0");
-            const q = textValues[`faq.item${index}.question`];
-            const a = textValues[`faq.item${index}.answer`];
-            if (typeof q === "string" && typeof a === "string") {
-              faqItems.push({
-                "@type": "Question",
-                name: q,
-                acceptedAnswer: { "@type": "Answer", text: a }
-              });
-            }
-          }
-          if (faqItems.length) {
-            element.setInnerContent(JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqItems }));
-          }
-        }
-      });
-
-    const transformed = rewriter.transform(source);
-    const html = await transformed.text();
-    files.push({ path: page.repoPath, bytes: new TextEncoder().encode(html) });
-  }
-
-  return files;
+function sectionFromLabel(label) {
+  const value = String(label || "본문");
+  const index = value.indexOf(" · ");
+  return index > 0 ? value.slice(0, index) : value;
 }
 
-async function commitFilesToGitHub(env, files, message) {
-  const token = await createInstallationToken(env);
+
+function getMediaDisplayLabel(slot, altLabel) {
+  if (slot === "space") return "매장 공간 사진";
+  const match = String(slot).match(/^nail-(\d+)$/);
+  if (match) return `네일 포트폴리오 ${match[1]}`;
+  return altLabel || humanizeMediaSlot(slot);
+}
+function humanizeMediaSlot(slot) {
+  if (slot === "space") return "매장 공간";
+  const match = String(slot).match(/^nail-(\d+)$/);
+  if (match) return `네일 이미지 ${match[1]}`;
+  return String(slot).replace(/-/g, " ");
+}
+
+function isSafeMediaBinding(slot, publicUrl) {
+  if (!MEDIA_SLOT_PATTERN.test(String(slot || ""))) return false;
+  const clean = stripQueryAndHash(publicUrl);
+  return clean === `/assets/images/${slot}.webp`;
+}
+
+function stripQueryAndHash(value) {
+  return String(value || "").split(/[?#]/, 1)[0];
+}
+
+function clampInt(value, min, max) {
+  const number = Number.parseInt(String(value), 10);
+  if (!Number.isFinite(number)) return min;
+  return Math.min(max, Math.max(min, number));
+}
+
+async function applyEditorChangesToHtml(html, textChanges, changedSlots, imageModel, version) {
+  const source = new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+  const faqText = { ...collectCurrentTextValues(html), ...textChanges };
+  const rewriter = new HTMLRewriter()
+    .on("[data-edit-key]", {
+      element(element) {
+        const key = element.getAttribute("data-edit-key") || "";
+        if (Object.prototype.hasOwnProperty.call(textChanges, key)) element.setInnerContent(textChanges[key]);
+      }
+    })
+    .on("img[data-media-slot]", {
+      element(element) {
+        const slot = element.getAttribute("data-media-slot") || "";
+        if (!changedSlots.has(slot)) return;
+        const meta = imageModel[slot];
+        if (meta && isSafeMediaBinding(slot, meta.publicUrl)) element.setAttribute("src", `${meta.publicUrl}?v=${encodeURIComponent(version)}`);
+      }
+    })
+    .on("script[data-faq-schema]", {
+      element(element) {
+        const faqItems = [];
+        for (let i = 1; i <= 20; i++) {
+          const index = String(i).padStart(2, "0");
+          const q = faqText[`faq.item${index}.question`];
+          const a = faqText[`faq.item${index}.answer`];
+          if (typeof q === "string" && typeof a === "string") faqItems.push({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } });
+        }
+        if (faqItems.length) element.setInnerContent(JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqItems }));
+      }
+    });
+  return rewriter.transform(source).text();
+}
+
+function collectCurrentTextValues(html) {
+  const values = {};
+  for (const marker of extractTextMarkers(html)) if (!Object.prototype.hasOwnProperty.call(values, marker.key)) values[marker.key] = marker.value;
+  return values;
+}
+
+async function commitFilesToGitHubWithToken(env, token, files, message, expectedHeadSha) {
+  if (!Array.isArray(files) || files.length === 0) return { sha: expectedHeadSha, url: "" };
   const owner = String(env.GITHUB_OWNER || "").trim();
   const repo = String(env.GITHUB_REPO || "").trim();
   const branch = String(env.GITHUB_BRANCH || "main").trim();
   const headers = githubHeaders(token);
   const api = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;
+  const currentHeadSha = await getRepositoryHeadSha(env, token);
+  if (!timingSafeEqualString(currentHeadSha, expectedHeadSha)) throw new Error("저장 직전에 저장소가 변경되었습니다. 관리자 페이지를 새로고침한 뒤 다시 저장해 주세요.");
 
-  const refRes = await fetch(`${api}/git/ref/heads/${branch.split("/").map(encodeURIComponent).join("/")}`, { headers });
-  const refData = await refRes.json().catch(() => ({}));
-  if (!refRes.ok || !refData?.object?.sha) throw new Error(`GitHub 브랜치 정보를 확인하지 못했습니다. ${await responseDetail(refRes, refData)}`);
-  const headSha = String(refData.object.sha);
-
-  const commitRes = await fetch(`${api}/git/commits/${encodeURIComponent(headSha)}`, { headers });
+  const commitRes = await fetch(`${api}/git/commits/${encodeURIComponent(currentHeadSha)}`, { headers });
   const commitData = await commitRes.json().catch(() => ({}));
   if (!commitRes.ok || !commitData?.tree?.sha) throw new Error(`GitHub 현재 커밋 정보를 확인하지 못했습니다. ${await responseDetail(commitRes, commitData)}`);
   const baseTreeSha = String(commitData.tree.sha);
@@ -345,18 +537,19 @@ async function commitFilesToGitHub(env, files, message) {
   const newCommitRes = await fetch(`${api}/git/commits`, {
     method: "POST",
     headers: { ...headers, "Content-Type": "application/json" },
-    body: JSON.stringify({ message, tree: tree.sha, parents: [headSha] })
+    body: JSON.stringify({ message, tree: tree.sha, parents: [currentHeadSha] })
   });
   const newCommit = await newCommitRes.json().catch(() => ({}));
   if (!newCommitRes.ok || !newCommit?.sha) throw new Error(`GitHub 커밋 생성에 실패했습니다. ${await responseDetail(newCommitRes, newCommit)}`);
 
-  const updateRefRes = await fetch(`${api}/git/refs/heads/${branch.split("/").map(encodeURIComponent).join("/")}`, {
+  const branchPath = branch.split("/").map(encodeURIComponent).join("/");
+  const updateRefRes = await fetch(`${api}/git/refs/heads/${branchPath}`, {
     method: "PATCH",
     headers: { ...headers, "Content-Type": "application/json" },
     body: JSON.stringify({ sha: newCommit.sha, force: false })
   });
   const updatedRef = await updateRefRes.json().catch(() => ({}));
-  if (!updateRefRes.ok) throw new Error(`GitHub 브랜치 반영에 실패했습니다. 다른 변경이 먼저 반영되었다면 관리자 화면을 새로고침 후 다시 저장해 주세요. ${await responseDetail(updateRefRes, updatedRef)}`);
+  if (!updateRefRes.ok) throw new Error(`GitHub 브랜치 반영에 실패했습니다. ${await responseDetail(updateRefRes, updatedRef)}`);
 
   return { sha: String(newCommit.sha), url: `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/commit/${encodeURIComponent(String(newCommit.sha))}` };
 }
@@ -364,6 +557,125 @@ async function commitFilesToGitHub(env, files, message) {
 async function responseDetail(response, data) {
   const message = String(data?.message || "").slice(0, 180);
   return message ? `(${response.status}: ${message})` : `(${response.status})`;
+}
+
+function base64ToUtf8(value) {
+  const base64 = String(value || "").replace(/\s+/g, "");
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+async function revokeInstallationToken(token) {
+  try {
+    await fetch("https://api.github.com/installation/token", {
+      method: "DELETE",
+      headers: githubHeaders(token)
+    });
+  } catch (error) {
+    console.warn("GitHub installation token revoke failed", error);
+  }
+}
+
+function buildSandboxPreview(html, origin, bridgeNonce) {
+  const cspNonce = randomBase64Url(18);
+  const source = new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+  const bridge = previewBridgeScript(bridgeNonce);
+  const style = `
+    html { scroll-behavior:smooth !important; }
+    body.bellemyu-admin-preview [data-edit-key], body.bellemyu-admin-preview img[data-media-slot] { cursor:pointer !important; }
+    body.bellemyu-admin-preview.bellemyu-show-markers [data-edit-key] { outline:1.5px dashed rgba(164,95,35,.72) !important; outline-offset:3px !important; }
+    body.bellemyu-admin-preview.bellemyu-show-markers img[data-media-slot] { outline:2px dashed rgba(45,91,154,.76) !important; outline-offset:3px !important; }
+    body.bellemyu-admin-preview [data-bellemyu-selected="1"] { outline:3px solid #111 !important; outline-offset:4px !important; box-shadow:0 0 0 6px rgba(255,255,255,.88) !important; }
+    .portfolio-marquee-track,.ticker-track,.ticker>div { animation-play-state:paused !important; }
+  `;
+  const rewriter = new HTMLRewriter()
+    .on("script", { element(element) { element.remove(); } })
+    .on("iframe", { element(element) { element.remove(); } })
+    .on("object", { element(element) { element.remove(); } })
+    .on("embed", { element(element) { element.remove(); } })
+    .on("meta[http-equiv]", { element(element) { element.remove(); } })
+    .on("form", { element(element) { element.setAttribute("data-bellemyu-disabled-form", "1"); } })
+    .on("head", { element(element) { element.append(`<meta name="robots" content="noindex,nofollow"><style nonce="${cspNonce}">${style}</style>`, { html: true }); } })
+    .on("body", { element(element) { element.setAttribute("class", `${element.getAttribute("class") || ""} bellemyu-admin-preview bellemyu-show-markers`.trim()); element.append(`<script nonce="${cspNonce}">${bridge}</script>`, { html: true }); } });
+
+  const response = rewriter.transform(source);
+  const headers = new Headers(response.headers);
+  headers.set("Cache-Control", "no-store");
+  headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("Referrer-Policy", "no-referrer");
+  headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()");
+  headers.set("Content-Security-Policy", `default-src 'none'; img-src ${origin} data: blob:; style-src ${origin} 'nonce-${cspNonce}'; font-src ${origin}; script-src 'nonce-${cspNonce}'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors ${origin}`);
+  return new Response(response.body, { status: 200, headers });
+}
+
+function previewBridgeScript(bridgeNonce) {
+  return `(() => {
+    'use strict';
+    const NONCE=${JSON.stringify(bridgeNonce)};
+    const qs=(s)=>document.querySelector(s), qsa=(s)=>Array.from(document.querySelectorAll(s));
+    const safeId=(v)=>String(v||'').replace(/[^A-Za-z0-9._:-]/g,'');
+    const selector=(kind,id)=>kind==='text' ? '[data-edit-key="'+CSS.escape(id)+'"]' : 'img[data-media-slot="'+CSS.escape(id)+'"]';
+    const clearSelected=()=>qsa('[data-bellemyu-selected="1"]').forEach(el=>el.removeAttribute('data-bellemyu-selected'));
+    const markSelected=(kind,id,scroll)=>{ clearSelected(); const all=qsa(selector(kind,id)); all.forEach(el=>el.setAttribute('data-bellemyu-selected','1')); if(scroll&&all[0]) all[0].scrollIntoView({behavior:'smooth',block:'center',inline:'center'}); };
+    const applyText=(key,value)=>qsa(selector('text',key)).forEach(el=>{el.textContent=String(value??'')});
+    const applyImage=(slot,url)=>qsa(selector('image',slot)).forEach(el=>{el.src=String(url||'')});
+    document.addEventListener('click',(event)=>{
+      const target=event.target instanceof Element ? event.target : null;
+      if(!target) return;
+      const editable=target.closest('[data-edit-key],img[data-media-slot]');
+      if(editable){
+        event.preventDefault(); event.stopPropagation();
+        const key=editable.getAttribute('data-edit-key'); const slot=editable.getAttribute('data-media-slot');
+        const kind=key?'text':'image'; const id=safeId(key||slot);
+        if(!id) return;
+        markSelected(kind,id,false);
+        parent.postMessage({type:'bellemyu:select',nonce:NONCE,kind,id},'*');
+        return;
+      }
+      if(target.closest('a,button,input,select,textarea,label,form')){event.preventDefault();event.stopPropagation();}
+    },true);
+    document.addEventListener('submit',(event)=>{event.preventDefault();event.stopPropagation();},true);
+    window.addEventListener('message',(event)=>{
+      if(event.source!==parent) return;
+      const data=event.data||{};
+      if(data.nonce!==NONCE) return;
+      if(data.type==='bellemyu:hydrate'){
+        Object.entries(data.text||{}).forEach(([k,v])=>applyText(safeId(k),v));
+        Object.entries(data.images||{}).forEach(([k,v])=>applyImage(safeId(k),v));
+        document.body.classList.toggle('bellemyu-show-markers',data.highlight!==false);
+      } else if(data.type==='bellemyu:setText') applyText(safeId(data.id),data.value);
+      else if(data.type==='bellemyu:setImage') applyImage(safeId(data.id),data.url);
+      else if(data.type==='bellemyu:highlight') document.body.classList.toggle('bellemyu-show-markers',data.enabled!==false);
+      else if(data.type==='bellemyu:selectFromParent') markSelected(data.kind,safeId(data.id),true);
+      else if(data.type==='bellemyu:clearSelection') clearSelected();
+    });
+    parent.postMessage({type:'bellemyu:ready',nonce:NONCE},'*');
+  })();`;
+}
+
+function previewLoginExpired() {
+  return new Response("<!doctype html><meta charset=utf-8><style>body{font-family:system-ui;padding:40px;background:#f5f1eb;color:#222}</style><h1>관리자 로그인이 만료되었습니다.</h1><p>관리자 페이지를 새로고침해 다시 로그인해 주세요.</p>", {
+    status: 401,
+    headers: previewHeaders()
+  });
+}
+function previewError(message, status = 500) {
+  return new Response(`<!doctype html><meta charset=utf-8><style>body{font-family:system-ui;padding:40px;background:#f5f1eb;color:#222}</style><h1>미리보기 오류</h1><p>${escapeHtmlText(message)}</p>`, { status, headers: previewHeaders() });
+}
+function previewHeaders() {
+  return {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "no-store",
+    "X-Content-Type-Options": "nosniff",
+    "X-Robots-Tag": "noindex, nofollow, noarchive",
+    "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'self'"
+  };
+}
+function escapeHtmlText(value) {
+  return String(value || "").replace(/[&<>\"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
 }
 
 async function startGitHubLogin(request, env) {
@@ -520,81 +832,6 @@ function validateCsrfAndOrigin(request, expectedCsrf) {
   return null;
 }
 
-async function uploadMediaToGitHub(request, env, session) {
-  const configError = validateGitHubWriteConfig(env);
-  if (configError) return adminJson({ ok: false, error: configError }, 503);
-
-  const contentLength = Number(request.headers.get("Content-Length") || 0);
-  if (contentLength && contentLength > MAX_UPLOAD_BYTES + 1024 * 1024) {
-    return adminJson({ ok: false, error: "업로드 요청이 너무 큽니다." }, 413);
-  }
-
-  const form = await request.formData();
-  const slot = String(form.get("slot") || "");
-  const file = form.get("file");
-  const slotInfo = SLOTS[slot];
-
-  if (!slotInfo) return adminJson({ ok: false, error: "허용되지 않은 이미지 슬롯입니다." }, 400);
-  if (!(file instanceof File)) return adminJson({ ok: false, error: "이미지 파일이 필요합니다." }, 400);
-  if (file.size <= 0 || file.size > MAX_UPLOAD_BYTES) return adminJson({ ok: false, error: "이미지는 10MB 이하여야 합니다." }, 413);
-
-  const bytes = new Uint8Array(await file.arrayBuffer());
-  const type = detectImageType(bytes);
-  if (type !== "image/webp") return adminJson({ ok: false, error: "관리자 업로드 결과는 WebP 이미지여야 합니다." }, 415);
-
-  const dimensions = readImageDimensions(bytes, type);
-  if (!dimensions || dimensions.width < 1 || dimensions.height < 1) {
-    return adminJson({ ok: false, error: "이미지 해상도를 확인할 수 없습니다." }, 415);
-  }
-  if (dimensions.width > MAX_IMAGE_EDGE || dimensions.height > MAX_IMAGE_EDGE) {
-    return adminJson({ ok: false, error: `저장 이미지의 가로/세로는 ${MAX_IMAGE_EDGE}px 이하여야 합니다.` }, 400);
-  }
-
-  const installationToken = await createInstallationToken(env);
-  const owner = String(env.GITHUB_OWNER || "").trim();
-  const repo = String(env.GITHUB_REPO || "").trim();
-  const branch = String(env.GITHUB_BRANCH || "main").trim();
-  const githubPath = slotInfo.path;
-  const apiUrl = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${githubPath.split("/").map(encodeURIComponent).join("/")}`;
-  const headers = githubHeaders(installationToken);
-
-  const currentRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}`, { headers });
-  if (!currentRes.ok) {
-    const detail = await safeGitHubError(currentRes);
-    return adminJson({ ok: false, error: `GitHub에서 현재 파일을 확인하지 못했습니다. ${detail}` }, 502);
-  }
-  const current = await currentRes.json();
-  if (!current?.sha) return adminJson({ ok: false, error: "GitHub 파일 SHA를 확인하지 못했습니다." }, 502);
-
-  const updateRes = await fetch(apiUrl, {
-    method: "PUT",
-    headers: { ...headers, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      message: `chore(images): update ${slot} via bellemyunail admin (${session.login})`,
-      content: bytesToBase64(bytes),
-      sha: current.sha,
-      branch
-    })
-  });
-
-  if (!updateRes.ok) {
-    const detail = await safeGitHubError(updateRes);
-    return adminJson({ ok: false, error: `GitHub에 이미지를 저장하지 못했습니다. ${detail}` }, 502);
-  }
-
-  const updated = await updateRes.json();
-  return adminJson({
-    ok: true,
-    slot,
-    updatedAt: new Date().toISOString(),
-    width: dimensions.width,
-    height: dimensions.height,
-    publicUrl: `${slotInfo.publicUrl}?v=${encodeURIComponent(updated?.commit?.sha || Date.now())}`,
-    commitUrl: updated?.commit?.html_url || null,
-    message: "GitHub 저장 완료. Cloudflare 자동 재배포가 끝나면 공개 사이트에 반영됩니다."
-  });
-}
-
 async function createInstallationToken(env) {
   const jwt = await createGitHubAppJwt(env.GITHUB_APP_CLIENT_ID, env.GITHUB_APP_PRIVATE_KEY);
   const owner = String(env.GITHUB_OWNER || "").trim();
@@ -612,7 +849,7 @@ async function createInstallationToken(env) {
   const installation = await installationResponse.json().catch(() => ({}));
   if (!installationResponse.ok || !installation?.id) {
     console.warn("Failed to find GitHub App installation", installationResponse.status, installation?.message || "");
-    throw new Error("GitHub App이 bellemyunail1 저장소에 설치되어 있는지 확인해 주세요.");
+    throw new Error("GitHub App이 현재 GITHUB_REPO 저장소에 설치되어 있는지 확인해 주세요.");
   }
 
   const response = await fetch(`https://api.github.com/app/installations/${encodeURIComponent(String(installation.id))}/access_tokens`, {
@@ -968,7 +1205,7 @@ function adminHeaders(extra = {}) {
     "X-Frame-Options": "DENY",
     "Referrer-Policy": "no-referrer",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
-    "Content-Security-Policy": "default-src 'self'; img-src 'self' data: blob: https://avatars.githubusercontent.com; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self' https://github.com"
+    "Content-Security-Policy": "default-src 'self'; img-src 'self' data: blob: https://avatars.githubusercontent.com; script-src 'self'; style-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self' https://github.com"
   });
   for (const [key, value] of Object.entries(extra)) headers.set(key, value);
   return headers;

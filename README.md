@@ -1,39 +1,30 @@
-# BELLEMYU NAIL — Static Site + GitHub App Visual CMS
+# BELLEMYU NAIL — Workers Static + GitHub App Visual Editor
 
-청주 네일 벨르뮤네일 공개 사이트와 GitHub App 기반 비주얼 관리자입니다.
+Cloudflare Worker Static Assets 기반 벨르뮤네일 사이트입니다.
 
-## 최종 구조
+## 구조
 
-- Cloudflare Worker 1개
-- Workers Static Assets
-- GitHub 저장소 1개 (`tambleofficial/bellemyunail1`)
-- GitHub App 인증
-- 공개 사이트는 완전 Static
-- Worker 실행은 `/admin`과 `/admin/*`만
-- R2 없음
-- Zero Trust / Cloudflare Access 없음
-- 별도 DB 없음
+- 공개 사이트: 완전 Static Assets
+- 관리자: `/admin/`에서 GitHub App 로그인
+- 편집: 실제 화면 클릭 → 오른쪽 즉시 편집
+- 편집 항목: HTML marker 자동 발견 (manifest 없음)
+- 이미지: 동일 slot의 모든 사용 위치/마퀴 복제 자동 연동
+- 저장: 실제 HTML + 변경 이미지 → GitHub 단일 커밋 → Cloudflare 자동 재배포
 
-## 공개 페이지
+## 기존 Cloudflare 설정 재사용
 
-- `/`
-- `/nail-design/`
-- `/process/`
-- `/portfolio/`
-- `/visit/`
-- `/faq/`
+필요 Secret / Variable:
 
-## 관리자
+- `GITHUB_APP_CLIENT_ID`
+- `GITHUB_APP_CLIENT_SECRET`
+- `GITHUB_APP_PRIVATE_KEY`
+- `ADMIN_GITHUB_USER_ID`
+- `GITHUB_OWNER=tambleofficial`
+- `GITHUB_REPO=bellemyunail1`
+- `GITHUB_BRANCH=main`
 
-`/admin/`
+기존에 설정되어 있다면 추가 설정은 필요 없습니다.
 
-실제 페이지를 iframe으로 미리보고 문구/사진을 클릭해 수정합니다. 여러 변경사항은 한 번의 GitHub 커밋으로 저장되고 Cloudflare가 자동 재배포합니다.
+## 관리자 보안
 
-## 중요
-
-관리자 저장 시 공개 HTML 파일 자체가 갱신됩니다. 일반 방문자가 페이지를 열 때 Worker가 JSON을 읽어 문구를 끼워 넣지 않습니다.
-
-자세한 내용:
-- `VISUAL-EDITOR-KO.md`
-- `STATIC-PUBLISH-KO.md`
-- `SETUP-GITHUB-APP-KO.md`
+자세한 내용은 `VISUAL-EDITOR-KO.md`와 `ADMIN-SECURITY-KO.md` 참고.

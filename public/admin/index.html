@@ -36,7 +36,7 @@
         <div>
           <p class="eyebrow">VISUAL SITE EDITOR</p>
           <h1>보이는 화면에서 바로 수정</h1>
-          <p>수정할 문구나 사진을 미리보기에서 클릭하세요. 같은 사진이 여러 페이지나 마퀴에 반복되어도 <strong>한 슬롯만 수정하면 전부 같이 바뀝니다.</strong></p>
+          <p>왼쪽 실제 화면에서 수정할 문구나 사진을 클릭하세요. HTML의 편집 마커를 자동으로 찾아 연결하며, 같은 사진이 마퀴나 여러 페이지에 반복되어도 <strong>한 번만 수정하면 전부 같이 바뀝니다.</strong></p><p class="auto-stats" data-auto-stats>편집 항목 자동 탐색 중…</p>
         </div>
         <div class="repo-chip">저장소 <strong data-repository>확인 중…</strong></div>
       </div>
@@ -59,23 +59,26 @@
         <section class="preview-panel">
           <div class="preview-shell" data-preview-shell>
             <div class="preview-loading" data-preview-loading>페이지 미리보기를 불러오는 중…</div>
-            <iframe title="벨르뮤네일 페이지 미리보기" data-preview-frame></iframe>
+            <iframe title="벨르뮤네일 페이지 미리보기" data-preview-frame sandbox="allow-scripts"></iframe>
           </div>
         </section>
 
         <aside class="inspector" data-inspector>
           <div class="inspector-empty" data-inspector-empty>
             <div class="cursor-icon">↖</div>
-            <h2>수정할 곳을 클릭하세요</h2>
-            <p>미리보기에서 테두리가 표시된 문구 또는 사진을 클릭하면 여기에서 바로 수정할 수 있습니다.</p>
-            <div class="page-field-list">
-              <div class="field-list-head"><strong>현재 페이지 편집 항목</strong><span data-field-count></span></div>
-              <div data-page-field-list></div>
+            <p class="inspector-kicker" data-current-page-summary>페이지 · 클릭해서 편집</p>
+            <h2>왼쪽 화면에서 바로 선택하세요</h2>
+            <p>주황 점선은 문구, 파란 점선은 사진입니다. 클릭하는 즉시 이 영역에 해당 문구 또는 사진 편집기가 열립니다.</p>
+            <div class="editor-guide">
+              <div><b>문구</b><span>클릭 → 오른쪽 입력창 → 즉시 미리보기</span></div>
+              <div><b>사진</b><span>클릭 → 새 사진 선택 → 중복 위치 전체 자동 반영</span></div>
+              <div><b>저장</b><span>여러 변경 후 아래 버튼 한 번으로 GitHub 커밋</span></div>
             </div>
           </div>
 
           <div class="inspector-editor" data-inspector-editor hidden>
-            <button class="back-to-list" type="button" data-close-inspector>← 편집 항목 목록</button>
+            <button class="back-to-list" type="button" data-close-inspector>← 선택 해제</button>
+            <div class="inspector-kind" data-inspector-type>문구</div>
             <p class="inspector-kicker" data-inspector-kicker></p>
             <h2 data-inspector-title></h2>
             <div class="usage-box" data-usage-box></div>

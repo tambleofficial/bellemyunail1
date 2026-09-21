@@ -12,8 +12,6 @@
   X-Frame-Options: DENY
   Content-Security-Policy: default-src 'self'; img-src 'self' data: blob:; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 
-/content/*
-  Cache-Control: no-store
 
 /assets/images/*
   Cache-Control: public, max-age=0, must-revalidate

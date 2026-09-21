@@ -1,28 +1,10 @@
 # Static Publish 구조
 
-## 일반 방문자
+공개 사이트는 완전 정적입니다.
 
-`HTML / CSS / JS / 이미지 -> Cloudflare Static Assets`
+관리자 저장 시에만 Worker가 GitHub HTML/이미지를 수정하고 한 번의 커밋을 생성합니다.
+Cloudflare 자동 배포가 완료된 이후 일반 고객은 완성된 정적 파일만 받습니다.
 
-공개 페이지에는 `run_worker_first`를 사용하지 않습니다.
-
-## 관리자
-
-`/admin/* -> Worker -> GitHub App -> GitHub commit -> Cloudflare 자동 재배포`
-
-## 비용/트래픽 관점
-
-공개 페이지와 이미지 요청은 Static Assets로 처리되고 Worker 요청 한도를 사용하지 않도록 구성했습니다.
-Worker 실행은 관리자 로그인, 관리자 API, 저장 작업에 집중됩니다.
-
-## 기존 설정에서 추가로 필요한 것
-
-없습니다. 기존에 등록한 GitHub App Secret과 아래 변수 그대로 사용합니다.
-
-- `GITHUB_APP_CLIENT_ID`
-- `GITHUB_APP_CLIENT_SECRET`
-- `GITHUB_APP_PRIVATE_KEY`
-- `ADMIN_GITHUB_USER_ID`
-- `GITHUB_OWNER=tambleofficial`
-- `GITHUB_REPO=bellemyunail1`
-- `GITHUB_BRANCH=main`
+- 공개 `/`, `/nail-design/`, `/process/`, `/portfolio/`, `/visit/`, `/faq/`: Static Assets
+- `/admin`, `/admin/*`: Worker
+- R2 / KV / D1 / Zero Trust Access: 사용하지 않음
