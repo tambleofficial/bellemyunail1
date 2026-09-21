@@ -128,11 +128,11 @@ GitHub App 설정의 **Private keys**에서 **Generate a private key**를 누릅
 
 ---
 
-## 5. Cloudflare Worker Secret 4개 등록 — Chrome에서 가능
+## 5. Cloudflare Worker Secret 3개 등록 — Chrome에서 가능
 
 Cloudflare Dashboard → **Workers & Pages** → `bellemyunail` → **Settings** → **Variables and Secrets**로 이동합니다.
 
-다음 4개를 추가합니다. 가능하면 모두 **Secret** 타입으로 넣습니다.
+다음 3개를 추가합니다. 가능하면 모두 **Secret** 타입으로 넣습니다.
 
 ### `GITHUB_APP_CLIENT_ID`
 
@@ -141,10 +141,6 @@ Cloudflare Dashboard → **Workers & Pages** → `bellemyunail` → **Settings**
 ### `GITHUB_APP_CLIENT_SECRET`
 
 생성한 Client Secret
-
-### `GITHUB_APP_PRIVATE_KEY`
-
-다운로드한 `.pem` 파일의 전체 내용
 
 ### `ADMIN_GITHUB_USER_ID`
 
@@ -163,6 +159,8 @@ Cloudflare Dashboard → **Workers & Pages** → `bellemyunail` → **Settings**
 ## 6. Cloudflare를 한 번 다시 배포
 
 Secret 저장 후 현재 Worker의 최신 Deployment를 다시 배포하거나, GitHub에 작은 커밋을 하나 push합니다.
+
+이 버전은 GitHub 로그인 시 발급되는 만료형 user access token을 암호화된 HttpOnly 세션에 보관해 저장소 작업에 사용하므로 `GITHUB_APP_PRIVATE_KEY`는 필요하지 않습니다.
 
 ---
 

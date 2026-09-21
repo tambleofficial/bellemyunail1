@@ -17,13 +17,12 @@ Cloudflare Worker Static Assets 기반 벨르뮤네일 사이트입니다.
 
 - `GITHUB_APP_CLIENT_ID`
 - `GITHUB_APP_CLIENT_SECRET`
-- `GITHUB_APP_PRIVATE_KEY`
 - `ADMIN_GITHUB_USER_ID`
 - `GITHUB_OWNER=tambleofficial`
 - `GITHUB_REPO=bellemyunail1`
 - `GITHUB_BRANCH=main`
 
-기존에 설정되어 있다면 추가 설정은 필요 없습니다.
+기존에 설정되어 있다면 추가 설정은 필요 없습니다. `GITHUB_APP_PRIVATE_KEY`는 이 버전부터 사용하지 않습니다.
 
 ## 관리자 보안
 

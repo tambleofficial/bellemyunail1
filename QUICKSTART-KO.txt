@@ -7,12 +7,11 @@ BELLEMYUNAIL 관리자 빠른 설정
 5) Webhook Active OFF
 6) Repository permissions > Contents = Read and write
 7) Install App > Only select repositories > bellemyunail1
-8) Client ID / Client Secret / Private Key 준비
+8) Client ID / Client Secret 준비
 9) https://api.github.com/users/내GitHub아이디 에서 숫자 id 확인
-10) Cloudflare bellemyunail > Settings > Variables and Secrets에 아래 4개 Secret 추가
+10) Cloudflare bellemyunail > Settings > Variables and Secrets에 아래 3개 Secret 추가
     GITHUB_APP_CLIENT_ID
     GITHUB_APP_CLIENT_SECRET
-    GITHUB_APP_PRIVATE_KEY
     ADMIN_GITHUB_USER_ID
 11) Worker 재배포
 12) /admin/ 접속 -> GitHub로 로그인

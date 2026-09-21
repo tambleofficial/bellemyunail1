@@ -54,7 +54,7 @@ export default {
         if (request.method !== "GET") return methodNotAllowed("GET");
         const session = await requireAdminSession(request, env);
         if (session instanceof Response) return previewLoginExpired();
-        return getSecurePreview(request, env);
+        return getSecurePreview(request, env, session);
       }
       if (path === "/admin/api/save") {
         if (request.method !== "POST") return methodNotAllowed("POST");
@@ -70,6 +70,7 @@ export default {
         if (session instanceof Response) return session;
         const csrfError = validateCsrfAndOrigin(request, session.csrf);
         if (csrfError) return csrfError;
+        await revokeGitHubUserToken(env, String(session.githubToken || ""));
         return adminJson({ ok: true }, 200, { "Set-Cookie": clearCookie(SESSION_COOKIE, "/admin") });
       }
       if (path === "/admin" || path.startsWith("/admin/")) {
@@ -89,9 +90,9 @@ async function getEditorState(request, env, session) {
   const configError = validateGitHubWriteConfig(env);
   if (configError) return adminJson({ ok: false, error: configError }, 503);
 
-  let token = "";
+  const token = String(session.githubToken || "");
+  if (!token) return adminJson({ ok: false, error: "GitHub 관리자 세션이 올바르지 않습니다. 다시 로그인해 주세요.", loginRequired: true, loginUrl: "/admin/auth/start" }, 401);
   try {
-    token = await createInstallationToken(env);
     const snapshot = await loadRepositorySnapshot(env, token);
     const model = discoverEditorModel(snapshot.pages);
     return adminJson({
@@ -108,12 +109,10 @@ async function getEditorState(request, env, session) {
   } catch (error) {
     console.error("Editor state discovery failed", error);
     return adminJson({ ok: false, error: String(error?.message || "편집 항목을 자동 탐색하지 못했습니다.").slice(0, 500) }, 502);
-  } finally {
-    if (token) await revokeInstallationToken(token);
   }
 }
 
-async function getSecurePreview(request, env) {
+async function getSecurePreview(request, env, session) {
   const url = new URL(request.url);
   const pageId = String(url.searchParams.get("page") || "home");
   const bridgeNonce = String(url.searchParams.get("nonce") || "");
@@ -122,17 +121,15 @@ async function getSecurePreview(request, env) {
     return previewError("미리보기 요청이 올바르지 않습니다.", 400);
   }
 
-  let token = "";
+  const token = String(session.githubToken || "");
+  if (!token) return previewError("GitHub 관리자 세션이 만료되었습니다. 관리자 화면에서 다시 로그인해 주세요.", 401);
   try {
-    token = await createInstallationToken(env);
     const headSha = await getRepositoryHeadSha(env, token);
     const html = await getRepositoryTextFile(env, token, page.repoPath, headSha);
     return buildSandboxPreview(html, url.origin, bridgeNonce);
   } catch (error) {
     console.error("Secure preview failed", error);
     return previewError("미리보기를 불러오지 못했습니다. 관리자 화면을 새로고침해 주세요.", 502);
-  } finally {
-    if (token) await revokeInstallationToken(token);
   }
 }
 
@@ -155,9 +152,9 @@ async function saveEditorChanges(request, env, session) {
   const textChanges = submitted?.text && typeof submitted.text === "object" && !Array.isArray(submitted.text) ? submitted.text : {};
   if (!/^[0-9a-f]{40}$/i.test(baseSha)) return adminJson({ ok: false, error: "편집 기준 커밋을 확인할 수 없습니다. 관리자 페이지를 새로고침해 주세요." }, 409);
 
-  let token = "";
+  const token = String(session.githubToken || "");
+  if (!token) return adminJson({ ok: false, error: "GitHub 관리자 세션이 만료되었습니다. 다시 로그인해 주세요.", loginRequired: true, loginUrl: "/admin/auth/start" }, 401);
   try {
-    token = await createInstallationToken(env);
     const currentHeadSha = await getRepositoryHeadSha(env, token);
     if (!timingSafeEqualString(currentHeadSha, baseSha)) {
       return adminJson({
@@ -234,8 +231,6 @@ async function saveEditorChanges(request, env, session) {
   } catch (error) {
     console.error("Visual editor save failed", error);
     return adminJson({ ok: false, error: String(error?.message || "GitHub 저장에 실패했습니다.").slice(0, 500) }, 502);
-  } finally {
-    if (token) await revokeInstallationToken(token);
   }
 }
 
@@ -567,16 +562,6 @@ function base64ToUtf8(value) {
   return new TextDecoder().decode(bytes);
 }
 
-async function revokeInstallationToken(token) {
-  try {
-    await fetch("https://api.github.com/installation/token", {
-      method: "DELETE",
-      headers: githubHeaders(token)
-    });
-  } catch (error) {
-    console.warn("GitHub installation token revoke failed", error);
-  }
-}
 
 function buildSandboxPreview(html, origin, bridgeNonce) {
   const cspNonce = randomBase64Url(18);
@@ -769,15 +754,17 @@ async function finishGitHubLogin(request, env) {
   }
 
   const csrf = randomBase64Url(24);
+  const tokenExpiresIn = Math.max(300, Number(tokenData?.expires_in || SESSION_TTL_SECONDS));
   const sessionPayload = {
     uid: String(user.id),
     login: String(user.login),
     avatarUrl: String(user.avatar_url || ""),
     csrf,
+    githubToken: userToken,
     iat: now,
-    exp: now + SESSION_TTL_SECONDS
+    exp: Math.min(now + SESSION_TTL_SECONDS, now + tokenExpiresIn - 60)
   };
-  const sessionToken = await signPayload(sessionPayload, sessionSigningSecret(env));
+  const sessionToken = await encryptSessionPayload(sessionPayload, sessionEncryptionSecret(env));
 
   const headers = adminHeaders({
     Location: "/admin/"
@@ -799,19 +786,41 @@ async function requireAdminSession(request, env) {
   const token = getCookie(request, SESSION_COOKIE);
   if (!token) return adminJson({ ok: false, error: "로그인이 필요합니다.", loginRequired: true, loginUrl: "/admin/auth/start" }, 401);
 
-  const payload = await verifyPayload(token, sessionSigningSecret(env));
+  const payload = await decryptSessionPayload(token, sessionEncryptionSecret(env));
   const now = Math.floor(Date.now() / 1000);
   if (!payload || payload.exp < now || String(payload.uid) !== String(env.ADMIN_GITHUB_USER_ID)) {
     return adminJson({ ok: false, error: "관리자 세션이 만료되었습니다.", loginRequired: true, loginUrl: "/admin/auth/start" }, 401, {
       "Set-Cookie": clearCookie(SESSION_COOKIE, "/admin")
     });
   }
-  if (!payload.csrf || !payload.login) {
+  if (!payload.csrf || !payload.login || !payload.githubToken) {
     return adminJson({ ok: false, error: "관리자 세션이 올바르지 않습니다.", loginRequired: true }, 401, {
       "Set-Cookie": clearCookie(SESSION_COOKIE, "/admin")
     });
   }
   return payload;
+}
+
+async function revokeGitHubUserToken(env, token) {
+  if (!token) return;
+  const clientId = String(env.GITHUB_APP_CLIENT_ID || "").trim();
+  const clientSecret = String(env.GITHUB_APP_CLIENT_SECRET || "").trim();
+  if (!clientId || !clientSecret) return;
+  try {
+    const credentials = btoa(`${clientId}:${clientSecret}`);
+    await fetch(`https://api.github.com/applications/${encodeURIComponent(clientId)}/token`, {
+      method: "DELETE",
+      headers: {
+        "Accept": "application/vnd.github+json",
+        "Authorization": `Basic ${credentials}`,
+        "Content-Type": "application/json",
+        "User-Agent": "bellemyunail-admin-worker"
+      },
+      body: JSON.stringify({ access_token: token })
+    });
+  } catch (error) {
+    console.warn("GitHub user token revoke failed", error);
+  }
 }
 
 function validateCsrfAndOrigin(request, expectedCsrf) {
@@ -830,112 +839,6 @@ function validateCsrfAndOrigin(request, expectedCsrf) {
     return adminJson({ ok: false, error: "CSRF 검증에 실패했습니다. 페이지를 새로고침해 주세요." }, 403);
   }
   return null;
-}
-
-async function createInstallationToken(env) {
-  const jwt = await createGitHubAppJwt(env.GITHUB_APP_CLIENT_ID, env.GITHUB_APP_PRIVATE_KEY);
-  const owner = String(env.GITHUB_OWNER || "").trim();
-  const repo = String(env.GITHUB_REPO || "").trim();
-  const appHeaders = {
-    "Accept": "application/vnd.github+json",
-    "Authorization": `Bearer ${jwt}`,
-    "X-GitHub-Api-Version": GITHUB_API_VERSION,
-    "User-Agent": "bellemyunail-admin-worker"
-  };
-
-  const installationResponse = await fetch(`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/installation`, {
-    headers: appHeaders
-  });
-  const installation = await installationResponse.json().catch(() => ({}));
-  if (!installationResponse.ok || !installation?.id) {
-    console.warn("Failed to find GitHub App installation", installationResponse.status, installation?.message || "");
-    throw new Error("GitHub App이 현재 GITHUB_REPO 저장소에 설치되어 있는지 확인해 주세요.");
-  }
-
-  const response = await fetch(`https://api.github.com/app/installations/${encodeURIComponent(String(installation.id))}/access_tokens`, {
-    method: "POST",
-    headers: {
-      ...appHeaders,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      repositories: [repo],
-      permissions: { contents: "write" }
-    })
-  });
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok || !data?.token) {
-    console.warn("Failed to create GitHub installation token", response.status, data?.message || "");
-    throw new Error("GitHub App 설치 토큰을 만들지 못했습니다. App 설치 범위와 Private Key를 확인해 주세요.");
-  }
-  return String(data.token);
-}
-
-async function createGitHubAppJwt(clientId, privateKeyPem) {
-  const now = Math.floor(Date.now() / 1000);
-  const header = base64UrlEncodeText(JSON.stringify({ alg: "RS256", typ: "JWT" }));
-  const payload = base64UrlEncodeText(JSON.stringify({ iat: now - 60, exp: now + 9 * 60, iss: String(clientId) }));
-  const unsigned = `${header}.${payload}`;
-
-  const keyData = pemPrivateKeyToPkcs8(String(privateKeyPem || ""));
-  const key = await crypto.subtle.importKey(
-    "pkcs8",
-    keyData,
-    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const signature = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, new TextEncoder().encode(unsigned));
-  return `${unsigned}.${base64UrlEncodeBytes(new Uint8Array(signature))}`;
-}
-
-function pemPrivateKeyToPkcs8(pem) {
-  const normalized = pem.replace(/\\n/g, "\n").trim();
-  if (!normalized) throw new Error("GitHub App Private Key가 설정되지 않았습니다.");
-
-  if (normalized.includes("BEGIN PRIVATE KEY")) {
-    return pemBodyToBytes(normalized, "PRIVATE KEY");
-  }
-  if (normalized.includes("BEGIN RSA PRIVATE KEY")) {
-    const pkcs1 = pemBodyToBytes(normalized, "RSA PRIVATE KEY");
-    return wrapPkcs1AsPkcs8(pkcs1);
-  }
-  throw new Error("지원하지 않는 GitHub App Private Key 형식입니다.");
-}
-
-function pemBodyToBytes(pem, label) {
-  const base64 = pem
-    .replace(`-----BEGIN ${label}-----`, "")
-    .replace(`-----END ${label}-----`, "")
-    .replace(/\s+/g, "");
-  const binary = atob(base64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-  return bytes;
-}
-
-function wrapPkcs1AsPkcs8(pkcs1) {
-  const version = new Uint8Array([0x02, 0x01, 0x00]);
-  const rsaAlgorithmIdentifier = new Uint8Array([
-    0x30, 0x0d,
-    0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01,
-    0x05, 0x00
-  ]);
-  const privateKeyOctet = concatBytes(new Uint8Array([0x04]), derLength(pkcs1.length), pkcs1);
-  const body = concatBytes(version, rsaAlgorithmIdentifier, privateKeyOctet);
-  return concatBytes(new Uint8Array([0x30]), derLength(body.length), body);
-}
-
-function derLength(length) {
-  if (length < 0x80) return new Uint8Array([length]);
-  const bytes = [];
-  let n = length;
-  while (n > 0) {
-    bytes.unshift(n & 0xff);
-    n >>>= 8;
-  }
-  return new Uint8Array([0x80 | bytes.length, ...bytes]);
 }
 
 function concatBytes(...arrays) {
@@ -966,11 +869,9 @@ function validateSessionConfig(env) {
 
 function validateGitHubWriteConfig(env) {
   const missing = [];
-  if (!String(env.GITHUB_APP_CLIENT_ID || "").trim()) missing.push("GITHUB_APP_CLIENT_ID");
-  if (!String(env.GITHUB_APP_PRIVATE_KEY || "").trim()) missing.push("GITHUB_APP_PRIVATE_KEY");
   if (!String(env.GITHUB_OWNER || "").trim()) missing.push("GITHUB_OWNER");
   if (!String(env.GITHUB_REPO || "").trim()) missing.push("GITHUB_REPO");
-  return missing.length ? `GitHub App 업로드 설정이 필요합니다: ${missing.join(", ")}` : "";
+  return missing.length ? `GitHub 저장소 설정이 필요합니다: ${missing.join(", ")}` : "";
 }
 
 function sessionSigningSecret(env) {
@@ -1014,6 +915,40 @@ function importHmacKey(secret) {
     false,
     ["sign", "verify"]
   );
+}
+
+function sessionEncryptionSecret(env) {
+  const clientSecret = String(env.GITHUB_APP_CLIENT_SECRET || "").trim();
+  if (!clientSecret) throw new Error("GITHUB_APP_CLIENT_SECRET이 설정되지 않았습니다.");
+  return `bellemyunail-session-encryption-v1:${clientSecret}`;
+}
+
+async function importSessionAesKey(secret) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(secret || "")));
+  return crypto.subtle.importKey("raw", digest, { name: "AES-GCM" }, false, ["encrypt", "decrypt"]);
+}
+
+async function encryptSessionPayload(payload, secret) {
+  const iv = new Uint8Array(12);
+  crypto.getRandomValues(iv);
+  const key = await importSessionAesKey(secret);
+  const plaintext = new TextEncoder().encode(JSON.stringify(payload));
+  const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, plaintext);
+  return `${base64UrlEncodeBytes(iv)}.${base64UrlEncodeBytes(new Uint8Array(encrypted))}`;
+}
+
+async function decryptSessionPayload(token, secret) {
+  try {
+    const [ivPart, cipherPart] = String(token || "").split(".");
+    if (!ivPart || !cipherPart) return null;
+    const iv = base64UrlDecodeBytes(ivPart);
+    if (iv.length !== 12) return null;
+    const key = await importSessionAesKey(secret);
+    const plaintext = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, base64UrlDecodeBytes(cipherPart));
+    return JSON.parse(new TextDecoder().decode(plaintext));
+  } catch {
+    return null;
+  }
 }
 
 function randomBase64Url(byteLength) {

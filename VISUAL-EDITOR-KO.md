@@ -71,3 +71,8 @@ HTML에 아래처럼 `data-edit-key`만 있으면 관리자에 자동 등록됩�
 
 `wrangler.jsonc`의 `run_worker_first`는 `/admin`, `/admin/*`뿐입니다.
 일반 방문자의 HTML/CSS/JS/이미지는 Cloudflare Static Assets로 직접 제공됩니다.
+
+
+## GitHub 인증 변경
+
+이 버전은 GitHub App Private Key를 사용하지 않습니다. GitHub OAuth 로그인에서 발급되는 만료형 user access token을 AES-GCM으로 암호화한 HttpOnly/Secure/SameSite=Strict 세션 쿠키에 저장하고, 해당 토큰으로 현재 GitHub App과 관리자 사용자 모두 접근 가능한 저장소에만 작업합니다. 로그아웃 시 토큰 revoke를 best-effort로 수행합니다.
