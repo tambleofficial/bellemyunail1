@@ -1,24 +1,3 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>페이지를 찾을 수 없습니다 | 벨르뮤네일</title><meta name="description" content="요청한 페이지를 찾을 수 없습니다. 벨르뮤네일 홈으로 이동하세요."><meta name="theme-color" content="#f4f0ea"><meta name="format-detection" content="telephone=no">
-<link rel="canonical" href="/404.html"><meta property="og:type" content="website"><meta property="og:locale" content="ko_KR"><meta property="og:site_name" content="벨르뮤네일"><meta property="og:title" content="페이지를 찾을 수 없습니다 | 벨르뮤네일"><meta property="og:description" content="요청한 페이지를 찾을 수 없습니다. 벨르뮤네일 홈으로 이동하세요."><meta property="og:image" content="/assets/images/nail-01.webp"><meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/assets/images/favicon.png" type="image/png"><link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/site-20260921.css"></head><body data-page="404"><div class="scroll-progress" aria-hidden="true"><span></span></div>
-<header class="site-header" data-header>
-  <div class="container nav">
-    <a class="brand" href="/" aria-label="벨르뮤네일 홈"><img src="/assets/images/logo.png" width="437" height="266" alt="벨르뮤네일 로고"></a>
-    <nav id="site-nav" class="nav-links" data-nav-links aria-label="주요 메뉴"><a href="/">홈</a><a href="/nail-design/">네일 디자인</a><a href="/process/">시술 과정</a><a href="/portfolio/">포트폴리오</a><a href="/visit/">방문 안내</a><a href="/faq/">자주 묻는 질문</a></nav>
-    <button class="menu-btn" type="button" data-menu-button aria-expanded="false" aria-controls="site-nav"><span class="menu-label">메뉴</span><span class="menu-icon" aria-hidden="true"><i></i><i></i></span></button>
-  </div>
-</header><main><section class="not-found"><div class="container"><p class="micro">404</p><h1>길을 잠깐<br>잘못 찾았어요.</h1><p>찾으시는 페이지가 없거나 주소가 변경되었습니다.</p><a class="pill pill-dark" href="/">홈으로 돌아가기 →</a></div></section></main><footer class="site-footer">
-  <div class="container footer-main">
-    <div class="footer-brand"><img src="/assets/images/logo.png" width="437" height="266" alt="벨르뮤네일"><p>유행을 복제하기보다, 손에 어울리는 균형을 찾는 청주 네일 스튜디오.</p></div>
-    <div class="footer-nav"><strong>메뉴</strong><a href="/nail-design/">네일 디자인</a><a href="/process/">시술 과정</a><a href="/portfolio/">포트폴리오</a></div>
-    <div class="footer-nav"><strong>안내</strong><a href="/visit/">방문 안내</a><a href="/faq/">자주 묻는 질문</a><a href="/admin/" rel="nofollow">관리자</a></div>
-  </div>
-  <div class="container footer-bottom"><span>© <span data-year></span> BELLEMYU NAIL</span><span>청주 네일 · 벨르뮤네일</span></div>
-</footer>
-<nav class="mobile-dock" aria-label="빠른 메뉴"><a href="/portfolio/"><span>포트폴리오</span><small>디자인 보기</small></a><a href="/visit/"><span>방문 안내</span><small>방문 전 확인</small></a></nav>
-<script>
-/* BELLEMYU interaction bundle — inlined to avoid asset/cache loading failures */
 (() => {
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -146,5 +125,3 @@
     }));
   }
 })();
-
-</script></body></html>
