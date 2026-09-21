@@ -1,0 +1,13 @@
+이번 수정본은 이전 배포에서 발생한 "새 HTML + 오래 캐시된 이전 CSS/JS" 혼합 문제를 수정한 버전입니다.
+
+변경점:
+- CSS: /assets/css/site-20260921.css 로 새 파일명 사용
+- JS: /assets/js/site-20260921.js 로 새 파일명 사용
+- CSS/JS Cache-Control을 max-age=0, must-revalidate 로 변경
+- 관리자/Worker/GitHub 업로드 구조는 변경 없음
+
+배포 방법:
+1) 이 ZIP 내용을 기존 GitHub 저장소 루트에 전부 덮어쓰기
+2) main 브랜치에 commit/push
+3) Cloudflare Workers 자동 빌드 성공 확인
+4) 사이트에서 Ctrl+F5 한 번 (새 파일명이라 보통 필요 없음)
