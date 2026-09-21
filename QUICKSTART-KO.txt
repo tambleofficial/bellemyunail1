@@ -1,0 +1,38 @@
+BELLEMYU NAIL 빠른 배포 순서
+============================
+
+1) 이 폴더 전체를 GitHub 저장소 루트에 올립니다.
+
+2) 로컬/Cloudflare에서 최초 배포
+   npm install
+   npx wrangler login
+   npm run r2:create
+   npm run deploy
+
+3) 배포된 주소 확인
+   https://bellemyunail.<내-workers-dev-subdomain>.workers.dev
+
+4) Cloudflare Zero Trust > Access > Applications
+   Self-hosted application 생성
+   보호 경로: bellemyunail.<내-subdomain>.workers.dev/admin*
+   Allow 정책: 관리자 본인 이메일만 허용
+
+5) Access 앱에서 값 확인 후 Worker Secret 등록
+   npx wrangler secret put TEAM_DOMAIN
+   값 예: https://myteam.cloudflareaccess.com
+
+   npx wrangler secret put POLICY_AUD
+   값: Access Application Audience (AUD) Tag
+
+   선택: 코드에서도 관리자 이메일을 고정하려면
+   npx wrangler secret put ADMIN_EMAILS
+   값 예: owner@example.com
+
+6) 관리자 접속
+   https://bellemyunail.<내-subdomain>.workers.dev/admin/
+
+7) 이후 운영
+   - 코드 변경: GitHub push -> Worker 자동 배포(Cloudflare Git 연결 시)
+   - 사진 변경: /admin/에서 업로드 -> R2 반영
+
+상세 내용: SETUP-KO.md

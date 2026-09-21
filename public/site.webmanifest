@@ -1,0 +1,10 @@
+{
+  "name": "벨르뮤네일 | 청주 네일",
+  "short_name": "벨르뮤네일",
+  "lang": "ko-KR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f2ec",
+  "theme_color": "#f6f2ec",
+  "icons": [{ "src": "/assets/images/favicon.png", "sizes": "64x64", "type": "image/png" }]
+}
