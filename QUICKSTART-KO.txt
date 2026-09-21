@@ -1,37 +1,21 @@
-BELLEMYUNAIL 최종 구조 — 이것으로 고정
+BELLEMYUNAIL 관리자 빠른 설정
 
-구성
-- Cloudflare Worker 1개
-- GitHub 저장소 1개: tambleofficial/bellemyunail1
-- Cloudflare Access: /admin* 만 보호
-- 관리자 사진 저장: GitHub 이미지 파일 교체 -> 자동 Worker 재배포
+1) ZIP 전체를 tambleofficial/bellemyunail1에 덮어쓰기 -> main push
+2) GitHub > Settings > Developer settings > GitHub Apps > New GitHub App
+3) Homepage = 현재 workers.dev 주소
+4) Callback = 현재 workers.dev 주소 + /admin/auth/callback
+5) Webhook Active OFF
+6) Repository permissions > Contents = Read and write
+7) Install App > Only select repositories > bellemyunail1
+8) Client ID / Client Secret / Private Key 준비
+9) https://api.github.com/users/내GitHub아이디 에서 숫자 id 확인
+10) Cloudflare bellemyunail > Settings > Variables and Secrets에 아래 4개 Secret 추가
+    GITHUB_APP_CLIENT_ID
+    GITHUB_APP_CLIENT_SECRET
+    GITHUB_APP_PRIVATE_KEY
+    ADMIN_GITHUB_USER_ID
+11) Worker 재배포
+12) /admin/ 접속 -> GitHub로 로그인
 
-사용하지 않음
-- R2 없음
-- Pages 없음
-- KV/D1 없음
-- 별도 Worker 없음
-- 결제수단 등록 없음
-
-지금 해야 할 것
-1) 이 ZIP 내용 전체로 GitHub 저장소 tambleofficial/bellemyunail1 을 덮어쓰고 main에 push
-2) Cloudflare Builds에서 다시 배포
-   Project: bellemyunail
-   Build command: 비움
-   Deploy command: npx wrangler deploy
-3) 배포 성공 후 Zero Trust > Access > Applications에서
-   <bellemyunail workers.dev 주소>/admin* 만 Self-hosted application으로 보호
-   정책: 본인 이메일만 Allow
-4) GitHub Fine-grained PAT 생성
-   - Only select repositories: tambleofficial/bellemyunail1
-   - Contents: Read and write
-   - 다른 권한은 주지 않음
-5) Cloudflare Worker Secret에 GITHUB_TOKEN 하나만 등록
-6) /admin/ 접속 후 사진 변경
-
-중요
-Cloudflare Access의 인증 결과는 Worker에서 ctx.access로 다시 확인합니다.
-TEAM_DOMAIN / POLICY_AUD 같은 별도 인증 Secret은 필요 없습니다.
-
-사진 변경 흐름
-/admin -> Access 로그인 -> 이미지 선택 -> 1920px WebP(82%) + EXIF 제거 -> Worker 재검증 -> GitHub 파일 교체 -> GitHub 커밋 -> Cloudflare 자동 재배포 -> 반영
+R2 / Zero Trust / Access / PAT / 카드 등록 사용 안 함.
+자세한 내용: SETUP-GITHUB-APP-KO.md

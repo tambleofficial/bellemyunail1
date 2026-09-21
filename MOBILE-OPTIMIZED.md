@@ -12,4 +12,4 @@
 - prefers-reduced-motion 대응
 - 관리자 1열 및 업로드 미리보기
 
-저장 구조는 Worker + GitHub + Cloudflare Access이며 R2는 사용하지 않습니다.
+저장 구조는 Cloudflare Worker + GitHub App + GitHub 저장소이며 R2와 Cloudflare Access는 사용하지 않습니다.

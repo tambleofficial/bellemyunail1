@@ -1,1 +1,49 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow,noarchive"><title>벨르뮤네일 관리자</title><link rel="icon" href="/assets/images/favicon.png"><link rel="stylesheet" href="/admin/admin.css"></head><body><div class="wrap"><header class="top"><a href="/" aria-label="벨르뮤네일 홈"><img src="/assets/images/logo.png" width="437" height="266" decoding="async" alt="벨르뮤네일"></a><div class="who">Access 로그인: <strong data-admin-email>확인 중…</strong></div></header><main><div class="intro"><div><p style="margin:0 0 8px;color:#8d7766;font-size:12px;font-weight:700;letter-spacing:.16em">BELLEMYU NAIL ADMIN</p><h1>사진 관리</h1></div><p>사진을 선택하면 브라우저에서 먼저 검사하고 최대 폭 1920px로 줄인 뒤 WebP로 재인코딩합니다. 변환 결과를 확인하고 업로드 버튼을 누르세요.</p></div><div class="notice">허용: JPG/JPEG/PNG/WebP · 원본 최대 10MB · 가로/세로 최대 4096px · 업로드 API에서도 파일 시그니처와 해상도를 다시 검사합니다.</div><section class="grid" data-grid><div class="notice">관리자 정보를 불러오는 중입니다…</div></section><p class="footnote">보안: 이 경로는 Cloudflare Access 인증이 필요하며, Worker에서도 Cloudflare Access 인증 컨텍스트를 다시 확인합니다. GitHub API 키는 브라우저에 노출되지 않습니다.</p></main></div><script src="/admin/admin.js" defer></script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>벨르뮤네일 관리자</title>
+  <link rel="icon" href="/assets/images/favicon.png">
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a href="/" aria-label="벨르뮤네일 홈" class="brand-link"><img src="/assets/images/logo.png" width="437" height="266" decoding="async" alt="벨르뮤네일"></a>
+      <div class="top-actions" data-authenticated hidden>
+        <div class="who"><img data-avatar alt="" hidden><span>관리자 <strong data-admin-user>확인 중…</strong></span></div>
+        <button class="ghost-btn" type="button" data-logout>로그아웃</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="login-card" data-login-panel hidden>
+        <p class="eyebrow">BELLEMYU NAIL ADMIN</p>
+        <h1>관리자 로그인</h1>
+        <p>등록된 GitHub 관리자 계정으로 로그인하면 사진을 교체할 수 있습니다.</p>
+        <a class="github-login" href="/admin/auth/start">GitHub로 로그인</a>
+        <p class="small">GitHub App은 <strong>bellemyunail1</strong> 저장소에만 설치하고, Contents 권한만 허용하는 구성을 전제로 합니다.</p>
+        <p class="error-box" data-login-error hidden></p>
+      </section>
+
+      <section data-admin-panel hidden>
+        <div class="intro">
+          <div>
+            <p class="eyebrow">BELLEMYU NAIL ADMIN</p>
+            <h1>사진 관리</h1>
+          </div>
+          <p>사진을 선택하면 브라우저에서 먼저 검사하고 최대 폭 1920px로 줄인 뒤 WebP로 재인코딩합니다. 결과를 확인한 뒤 저장하세요.</p>
+        </div>
+
+        <div class="notice">허용: JPG/JPEG/PNG/WebP · 원본 최대 10MB · 가로/세로 최대 4096px · 서버에서도 WebP 시그니처/해상도를 다시 검사합니다.</div>
+        <div class="repo-line">연결 저장소: <strong data-repository>확인 중…</strong></div>
+        <section class="grid" data-grid><div class="notice">관리자 정보를 불러오는 중입니다…</div></section>
+        <p class="footnote">보안: GitHub OAuth state + PKCE, 지정 관리자 GitHub User ID 확인, Secure/HttpOnly 세션, CSRF 및 Origin 검증, GitHub App 설치 토큰(1시간 만료)을 사용합니다. 브라우저에는 GitHub App Private Key가 노출되지 않습니다.</p>
+      </section>
+    </main>
+  </div>
+  <script src="/admin/admin.js" defer></script>
+</body>
+</html>
