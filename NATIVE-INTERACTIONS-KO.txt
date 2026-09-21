@@ -1,0 +1,8 @@
+공개 사이트의 인터랙션은 JavaScript 실행에 의존하지 않습니다.
+- 모바일 메뉴: details/summary
+- 디자인/포트폴리오 필터: CSS :target
+- 포트폴리오 확대: CSS :target 라이트박스
+- 시술 과정 탭: radio + CSS
+- FAQ: native details
+- 슬라이더: native horizontal scroll + anchor navigation
+관리자 페이지는 기존 JS를 유지합니다.
